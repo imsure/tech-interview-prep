@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// a navie solution, compare two ints bit by bit
 // time: O(1)
 // space: O(1)
 class Solution {
@@ -23,7 +24,7 @@ public:
   }
 };
 
-// a more clever solution
+// a more clever solution, xor two ints, then count the # of 1s in the result.
 class Solution2 {
 public:
   int hammingDistance(int x, int y) {
