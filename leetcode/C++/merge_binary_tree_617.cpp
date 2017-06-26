@@ -8,8 +8,11 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-// time:
-// space:
+// traverse both trees in pre-order fashion (root, left, right).
+// time: O(m+n), m and n corresponds to number of nodes in t1 and t2
+// space: O(m+n), we are building a new tree here
+// not a so good solution since we are building a complete new tree instead of
+// merging in place. and the code is not quite readable.
 class Solution {
 public:
   TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
@@ -32,6 +35,26 @@ public:
     } else { // both NULL
       return NULL;
     }
+  }
+};
+
+
+// credit: https://leetcode.com/articles/merge-two-binary-trees/
+// pre-order traversal, merge two trees in place at t1.
+// time: O(m), m is the minimum number of nodes of both trees, a total m nodes
+//             needs to be traversed.
+// space: O(m) ???
+class Solution2 {
+public:
+  TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+    if (t1 == NULL) return t2;
+    if (t2 == NULL) return t1;
+
+    t1->val += t2->val;
+    t1->left = mergeTrees(t1->left, t2->left);
+    t1->right = mergeTrees(t1->right, t2->right);
+
+    return t1;
   }
 };
 
