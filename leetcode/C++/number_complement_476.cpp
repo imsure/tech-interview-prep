@@ -1,7 +1,12 @@
 #include "common.hpp"
 
-// time:
-// space:
+// idea: initialize a mask as 0xFFFFFFFF, then repeatedly
+// anding mask with num, if the result > 0, left shift mask by 1 bit
+// with trailing 0's until the result is 0, then the trailing 0's in
+// the mask can be used to identify the valid bits in the input number.
+
+// time: O(1)
+// space: O(1)
 class Solution {
 public:
   int findComplement(int num) {
