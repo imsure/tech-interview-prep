@@ -90,7 +90,11 @@ public:
 };
 
 
-// time: O(n^2)
+// idea: sort the array first, then for each negative value x,
+// add n1 with each positive value y, then binary searching (x+y), if found,
+// add (x, y, -(x+y)) to result. skip any dupcliated x and y during traversal.
+
+// time: O(n^2 * log(n))
 // space:
 class Solution2 {
 public:
@@ -139,15 +143,63 @@ public:
   }
 };
 
+// credit: https://discuss.leetcode.com/topic/8107/share-my-ac-c-solution-around-50ms-o-n-n-with-explanation-and-comments
+// idea: sort the array first, for each number x from at index i, scan the
+// remaining numbers from i+1 to the end, find if there exists y+z = -x, jump over
+// the numbers have been scanned to ignore the duplicates.
+
+// time: O(n^2)
+// space:
+class Solution3 {
+public:
+  vector<vector<int>> threeSum(vector<int>& nums) {
+    vector<vector<int>> result {};
+    int len = nums.size();
+
+    if (len < 3) return result;
+
+    std::sort(nums.begin(), nums.end());
+
+    int i = 0, front, back, target = -nums[i];
+    while (i < len && target >= 0) {
+      front = i + 1;
+      back = len - 1;
+
+      while (front < back) {
+        int twosum = nums[front] + nums[back];
+        if (twosum < target) ++front;
+        else if (twosum > target) --back;
+        else {
+          vector<int> triplet (3, 0);
+          triplet[0] = nums[i];
+          triplet[1] = nums[front];
+          triplet[2] = nums[back];
+          result.emplace_back(triplet);
+
+          // skip duplicates
+          while (front < back && nums[++front] == triplet[1]) ;
+          while (front < back && nums[--back] == triplet[2]) ;
+        }
+      }
+      // skip duplicates
+      while (i + 1 < len && nums[i+1] == nums[i]) ++i;
+      i += 1; // move i to the next value
+      target = -nums[i]; // update target
+    }
+
+    return result;
+  }
+};
+
 int main()
 {
-  Solution2 sol;
-  // vector<int> nums {-2, -1, -1, 0, 2, 3};
+  Solution3 sol;
+  vector<int> nums {-2, -1, -1, 0, 2, 3};
   // vector<int> nums {-1, 0, 1, 2, -1, -4};
   // vector<int> nums {0,0,0};
   // vector<int> nums {0,1,-5,-4,0,-4,1};
   // vector<int> nums {0,-4,-1,-4,-2,-3,2};
-  vector<int> nums {-2,-3,0,0,-2};
+  // vector<int> nums {-2,-3,0,0,-2};
   vector<vector<int>> results = sol.threeSum(nums);
   for (const auto& res : results) {
     cout << res[0] << ", " << res[1] << ", " << res[2] << endl;
