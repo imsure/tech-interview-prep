@@ -69,6 +69,12 @@ struct Node {
   }
 };
 
+// idea: hashmap + doubly linked list. The first element in the list
+// is always the least recently used and the last element in the list
+// is always the most recently accessed/modified/added element.
+
+// O(1) for both put and get.
+
 class LRUCache2 {
 private:
   void appendToEnd(Node* node) {
@@ -123,7 +129,6 @@ public:
 
     if (table.size() >= capacity) {
       int removed_key = removeFirst();
-      cout << "removed key: " << removed_key << endl;
       table.erase(removed_key);
     }
     table[key] = new Node(key, value);
@@ -147,6 +152,47 @@ private:
   unordered_map<int, Node*> table;
 };
 
+// use STL list instead of struct Node
+
+class LRUCache3 {
+public:
+  LRUCache3(int capacity) {
+    this->capacity = capacity;
+  }
+
+  int get(int key) {
+    auto found_it = table.find(key);
+    if (found_it != table.end()) {
+      cache.splice(cache.end(), cache, found_it->second);
+      return found_it->second->second;
+    } else {
+      return -1;
+    }
+  }
+
+  void put(int key, int value) {
+    auto found_it = table.find(key);
+    if (found_it != table.end()) {
+      found_it->second->second = value;
+      cache.splice(cache.end(), cache, found_it->second);
+      return;
+    }
+
+    if (table.size() >= capacity) {
+      table.erase(cache.begin()->first);
+      cache.pop_front();
+    }
+    cache.emplace_back(make_pair(key, value));
+    table[key] = --cache.end(); // better to store most recently added to the front
+  }
+
+private:
+  int capacity;
+  list<pair<int, int>> cache;
+  unordered_map<int, list<pair<int, int>>::iterator> table;
+};
+
+
 /**
  * Your LRUCache object will be instantiated and called as such:
  * LRUCache obj = new LRUCache(capacity);
@@ -155,15 +201,15 @@ private:
  */
 int main()
 {
-  LRUCache2 cache(2);
+  LRUCache3 cache(2);
   int val;
 
   cache.put(1, 1);
   cache.put(2, 2);
-  cache.printList();
+  //cache.printList();
   val = cache.get(1);       // returns 1
   cout << val << endl;
-  cache.printList();
+  //cache.printList();
   cache.put(3, 3);    // evicts key 2
   val = cache.get(2);       // returns -1 (not found)
   cout << val << endl;
