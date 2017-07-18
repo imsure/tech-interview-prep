@@ -1,7 +1,9 @@
 #include "common.hpp"
 
-// time:
-// space:
+// idea: scan the given string s char by char, reverse each work seperately.
+
+// time: O(n), linear to input size, assume reverse a single word takes constant time
+// space: O(1), not counting the space taken by the returned string
 class Solution {
 private:
   string reverseWord(string w) {
@@ -36,6 +38,13 @@ public:
   }
 };
 
+// scan the input char by char, use a stack to store the chars
+// until we see a whitespace, then pop out the chars on stack until
+// it's empty.
+
+// time: O(n)
+// space: O(1), assume a single word takes constant space
+
 class Solution2 {
 public:
   string reverseWords(string s) {
@@ -62,6 +71,27 @@ public:
   }
 };
 
+
+// credit: https://discuss.leetcode.com/topic/85754/c-solution
+
+// in-place reversing using std::reverse
+
+class Solution3 {
+public:
+  string reverseWords(string s) {
+    int len = s.size();
+    int begin_of_word = 0;
+    for (int i = 0; i <= len; ++i) {
+      if (i == len || s[i] == ' ') {
+        std::reverse(&s[begin_of_word], &s[i]);
+        begin_of_word = i + 1;
+      }
+    }
+
+    return s;
+  }
+};
+
 int main()
 {
   string s {"Let's take LeetCode contest"};
@@ -70,4 +100,7 @@ int main()
 
   Solution2 sol2;
   cout << sol2.reverseWords(s) << endl;
+
+  Solution3 sol3;
+  cout << sol3.reverseWords(s) << endl;
 }
