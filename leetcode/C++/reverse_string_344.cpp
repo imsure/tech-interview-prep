@@ -29,6 +29,21 @@ public:
   }
 };
 
+// two pointers solution
+
+class Solution3 {
+public:
+  string reverseString(string s) {
+    int i = 0, j = s.size() - 1;
+
+    while (i < j) {
+      swap(s[i++], s[j--]);
+    }
+
+    return s;
+  }
+};
+
 int main()
 {
   string s1 {"Let's take LeetCode contest"};
@@ -40,4 +55,8 @@ int main()
   Solution2 sol2;
   cout << sol2.reverseString(s1) << endl;
   cout << sol2.reverseString(s2) << endl;
+
+  Solution3 sol3;
+  cout << sol3.reverseString(s1) << endl;
+  cout << sol3.reverseString(s2) << endl;
 }
