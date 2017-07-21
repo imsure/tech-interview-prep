@@ -66,6 +66,76 @@ public:
   }
 };
 
+// cut the list at the (n-k)th elements, make the (n-k)th element
+// the new tail and the (n-k+1)th element the new head,
+// then connect the original tail to the original head.
+
+class Solution2 {
+public:
+  ListNode* rotateRight(ListNode* head, int k) {
+    if (k <= 0 || !head || head->next == NULL) return head;
+
+    int n = 0;
+    ListNode* list_runner = head;
+    while (list_runner) {
+      ++n;
+      list_runner = list_runner->next;
+    }
+
+    k = k % n;
+    if (k == 0) return head;
+    ListNode* head_orig = head; // backup
+    list_runner = head;
+    // move to the (n-k)th element
+    for (int i = 1; i < n - k; ++i) {
+      list_runner = list_runner->next;
+    }
+
+    ListNode* new_head;
+    ListNode* list_runner2 = list_runner->next; // (n-k+1)th element
+    new_head = list_runner2;
+    list_runner->next = NULL; // new tail
+    while (list_runner2->next) {
+      list_runner2 = list_runner2->next;
+    }
+
+    list_runner2->next = head_orig;
+
+    return new_head;
+  }
+};
+
+
+// credit: https://discuss.leetcode.com/topic/14470/my-clean-c-code-quite-standard-find-tail-and-reconnect-the-list
+
+// find tail and connect it with the head to form a cycle.
+// then make the (n-k+1)th element the new head
+
+class Solution3 {
+public:
+  ListNode* rotateRight(ListNode* head, int k) {
+    if (k <= 0 || !head || head->next == NULL) return head;
+
+    int n = 1;
+    ListNode* tail = head;
+    while (tail->next) {
+      ++n;
+      tail = tail->next;
+    }
+
+    tail->next = head;
+
+    k = k % n;
+    if (k) {
+      for (int i = 0; i < n - k; ++i) tail = tail->next; // move to the new tail
+    }
+
+    ListNode* new_head = tail->next;
+    tail->next = NULL;
+    return new_head;
+  }
+};
+
 int main()
 {
 }
