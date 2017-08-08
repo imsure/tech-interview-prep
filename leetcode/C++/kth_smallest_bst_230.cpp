@@ -40,6 +40,7 @@ private:
   int order = 0;
 };
 
+// credit: https://discuss.leetcode.com/topic/17573/4-lines-in-c
 // concise & elegant code!
 
 class Solution2 {
