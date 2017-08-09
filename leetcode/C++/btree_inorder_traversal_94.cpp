@@ -10,9 +10,17 @@ struct TreeNode {
 
 // Note: Recursive solution is trivial, could you do it iteratively?
 
-// corner case: if it is a single node tree, return immediately.
+// corner case: if it is an empty tree, return immediately.
 //
+// use a stack to store visited nodes, each associated with a counter
+// to keep track of how many times the node was read from the top of the stack.
 //
+// while stack is not empty:
+//   get the top node, increment the counter by 1
+//   if it is a leaf node, push its value to output vector and move on to the next iteration
+//   if left is not empty and counter == 1 (means left has not been processed), push left to stack and move on to the next iteration
+//   if left is not empty and counter > 1 (means left has been processed), push its value to output vector and deal with right
+//   if left is empty, push its value to output vector and deal with right
 
 class Solution {
 private:
