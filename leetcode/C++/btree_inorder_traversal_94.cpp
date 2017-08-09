@@ -70,7 +70,31 @@ public:
   }
 };
 
+// concise & elegant solution
+
+class Solution2 {
+public:
+  vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> res;
+    stack<TreeNode*> stk;
+    TreeNode* cur_node = root;
+
+    while (!stk.empty() || cur_node) {
+      if (cur_node) { // push to stack and move on to its left
+        stk.push(cur_node);
+        cur_node = cur_node->left;
+      } else { // pop the top node from the stack and move on to its right
+        res.push_back(stk.top()->val);
+        cur_node = stk.top()->right;
+        stk.pop();
+      }
+    }
+
+    return res;
+  }
+};
+
 int main()
 {
-  Solution sol;
+  Solution2 sol;
 }
