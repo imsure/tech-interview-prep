@@ -78,6 +78,40 @@ private:
   int k;
 };
 
+// utilize a stack, the next element is always on top of the stack.
+
+class BSTIterator2 {
+private:
+  void setNextSmallest(TreeNode* root) {
+    TreeNode* runner = root;
+    while (runner) {
+      stk.push(runner);
+      runner = runner->left;
+    }
+  }
+
+public:
+  BSTIterator2(TreeNode *root) {
+    setNextSmallest(root);
+  }
+
+  /** @return whether we have a next smallest number */
+  bool hasNext() {
+    return !stk.empty();
+  }
+
+  /** @return the next smallest number */
+  int next() {
+    TreeNode* nextSmallestNode = stk.top();
+    stk.pop();
+    setNextSmallest(nextSmallestNode->right);
+    return nextSmallestNode->val;
+  }
+
+private:
+  stack<TreeNode*> stk;
+};
+
 int main()
 {
 }
