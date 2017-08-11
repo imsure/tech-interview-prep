@@ -60,6 +60,32 @@ public:
   }
 };
 
+// iterative solution:
+
+class Solution3 {
+public:
+  int closestValue(TreeNode* root, double target) {
+    TreeNode* cur_node = root;
+
+    int closest = cur_node->val;
+    double distance2root, distance2child;
+    while (cur_node) {
+      distance2root = abs(cur_node->val - target);
+      if (distance2root <= 0.5) return cur_node->val;
+
+      TreeNode* child = cur_node->val > target ? cur_node->left : cur_node->right;
+      if (child) {
+        distance2child = abs(child->val - target);
+        if (distance2child < distance2root) closest = child->val;
+        else closest = cur_node->val;
+      }
+      cur_node = child;
+    }
+
+    return closest;
+  }
+};
+
 int main()
 {
   Solution sol;
