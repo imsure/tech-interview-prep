@@ -41,8 +41,11 @@ public:
 // the number of occurrences of a mode. Then traverse the tree again
 // to gather all modes.
 
+// Verbose and Not efficient! See Solution3
+
 class Solution2 {
 private:
+  // pre-order
   int countOccurrence(TreeNode* root, int val) {
     if (!root) return 0;
 
@@ -53,6 +56,7 @@ private:
     return count;
   }
 
+  // pre-order
   int findMaxOccur(TreeNode* root, TreeNode* parent) {
     if (!root) return 0;
 
@@ -89,6 +93,45 @@ public:
     int max_occurrence = findMaxOccur(root, nullptr);
     gatherModes(root, nullptr, max_occurrence, res);
     return res;
+  }
+};
+
+// A concise two-pass O(1) space solution
+// credit: https://discuss.leetcode.com/topic/77372/11-liner-c-o-n-time-o-1-extra-space-in-order-traversal-detailed-explanation
+
+class Solution3 {
+private:
+  // in order
+  void findMaxCount(TreeNode* root, int& max_count, int& prev, int& count) {
+    if (!root) return;
+
+    findMaxCount(root->left, max_count, prev, count);
+    root->val == prev ? ++count : count = 1;
+    prev = root->val;
+    max_count = max(max_count, count);
+    findMaxCount(root->right, max_count, prev, count);
+  }
+
+  void gatherModes(TreeNode* root, int& max_count, int& prev, int& count, vector<int>& modes) {
+    if (!root) return;
+
+    gatherModes(root->left, max_count, prev, count, modes);
+    root->val == prev ? ++count : count = 1;
+    prev = root->val;
+    if (count == max_count) modes.push_back(root->val);
+    gatherModes(root->right, max_count, prev, count, modes);
+  }
+
+public:
+  vector<int> findMode(TreeNode* root) {
+    int max_count = 0, prev, count = 0;
+    findMaxCount(root, max_count, prev, count);
+
+    vector<int> modes;
+    count = 0;
+    gatherModes(root, max_count, prev, count, modes);
+
+    return modes;
   }
 };
 
