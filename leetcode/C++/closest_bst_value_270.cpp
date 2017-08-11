@@ -41,6 +41,25 @@ public:
   }
 };
 
+// The closest value to target is either the root or the closest
+// in the apporpriate subtree.
+
+class Solution2 {
+public:
+  int closestValue(TreeNode* root, double target) {
+    double distance2root = abs(root->val - target);
+    if (distance2root <= 0.5) return root->val;
+
+    TreeNode* child = root->val > target ? root->left : root->right;
+    if (child) {
+      int closest_in_subtree = closestValue(child, target);
+      return abs(closest_in_subtree - target) < distance2root ? closest_in_subtree : root->val;
+    } else {
+      return root->val;
+    }
+  }
+};
+
 int main()
 {
   Solution sol;
