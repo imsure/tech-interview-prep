@@ -60,7 +60,8 @@ public:
   }
 };
 
-// iterative solution:
+// iterative solution: walk the path down the tree and update the
+// closest value along the way.
 
 class Solution3 {
 public:
@@ -80,6 +81,22 @@ public:
         else closest = cur_node->val;
       }
       cur_node = child;
+    }
+
+    return closest;
+  }
+};
+
+// a more concise iterative solution
+// credit: https://discuss.leetcode.com/topic/22590/4-7-lines-recursive-iterative-ruby-c-java-python
+
+class Solution4 {
+public:
+  int closestValue(TreeNode* root, double target) {
+    int closest = root->val;
+    while (root) {
+      if (abs(root->val - target) < abs(closest - target)) closest = root->val;
+      root = root->val > target ? root->left : root->right;
     }
 
     return closest;
