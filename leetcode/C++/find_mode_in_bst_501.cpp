@@ -16,6 +16,8 @@ public:
 
     stack<TreeNode*> stk;
     TreeNode* cur_node = root;
+    // in order traversal, since BST is ordered, we can count the duplicate values
+    // like a sorted array.
     while (!stk.empty() || cur_node) {
       if (cur_node) { // push to stack and move on to its left
         stk.push(cur_node);

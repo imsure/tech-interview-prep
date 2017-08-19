@@ -49,9 +49,9 @@ public:
 
 
 // iterative solution: saves the call stack overhead and also
-// avoids the recomputation of height in each step.
+// avoids the recomputation of h in each step.
 
-// time: O(logN)
+// time: O(logN * logN)
 
 class Solution3 {
 private:
@@ -60,15 +60,24 @@ private:
     return root == nullptr ? -1 : 1 + height(root->left);
   }
 
+  int height2(TreeNode* root) {
+    int h = -1;
+    while (root) {
+      ++h;
+      root = root->left;
+    }
+
+    return h;
+  }
+
 public:
   int countNodes(TreeNode* root) {
     int count = 0;
-    int h = height(root);
+    int h = height2(root);
     int h_right;
 
     while (root) {
-      h_right = height(root->right);
-      if (h_right == h - 1) {
+      if (height2(root->right) == h - 1) {
         count += (1 << h);
         root = root->right;
       } else { // h_right == h - 2
