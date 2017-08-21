@@ -8,8 +8,10 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-// time:
-// space:
+// Suppose s has M nodes and t has N nodes,
+// findRoot takes O(M) time to run, then in worst case it takes O(M*N) to compare trees,
+// time: O(M * N)
+// space: O(M)
 
 class Solution {
 private:
