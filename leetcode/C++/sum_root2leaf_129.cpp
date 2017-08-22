@@ -36,6 +36,34 @@ public:
   }
 };
 
+
+// slightly optimized version
+
+class Solution2 {
+private:
+  void sumNumbers(TreeNode* root, int& sum, int cur_val) {
+    cur_val = cur_val * 10 + root->val;
+
+    if (!root->left && !root->right) {
+      sum += cur_val;
+      return;
+    }
+
+    if (root->left) sumNumbers(root->left, sum, cur_val);
+    if (root->right) sumNumbers(root->right, sum, cur_val);
+  }
+
+public:
+  int sumNumbers(TreeNode* root) {
+    if (!root) return 0;
+
+    int sum = 0;
+    sumNumbers(root, sum, 0);
+
+    return sum;
+  }
+};
+
 int main()
 {
   Solution sol;
