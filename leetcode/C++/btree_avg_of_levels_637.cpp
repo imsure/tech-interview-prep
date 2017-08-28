@@ -8,6 +8,8 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// BFS solution
+
 class Solution {
 public:
   vector<double> averageOfLevels(TreeNode* root) {
@@ -36,6 +38,42 @@ public:
     return avgs;
   }
 };
+
+
+// DFS solution
+
+class Solution2 {
+private:
+  void dfs(TreeNode* root, int level, vector<double>& res, vector<int>& count) {
+    if (!root) return;
+
+    if (level <= res.size()) {
+      res[level-1] += root->val;
+      ++count[level-1];
+    } else {
+      res.push_back(root->val);
+      count.push_back(1);
+    }
+
+    if (root->left) dfs(root->left, level+1, res, count);
+    if (root->right) dfs(root->right, level+1, res, count);
+  }
+
+public:
+  vector<double> averageOfLevels(TreeNode* root) {
+    vector<double> res; // sum of nodes on each level
+    vector<int> count; // number of nodes on each level
+
+    dfs(root, 1, res, count);
+
+    for (int i = 0; i < res.size(); ++i) {
+      res[i] /= count[i];
+    }
+
+    return res;
+  }
+};
+
 
 int main()
 {
