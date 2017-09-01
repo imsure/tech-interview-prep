@@ -8,8 +8,8 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-// time:
-// space:
+// time: O(n)
+// space: O(1)
 
 class Solution {
   struct Counter {
@@ -30,7 +30,6 @@ private:
       if (parent->val == root->val - 1) cur_cnt.inc_count = 1 + max(left_cnt.inc_count, right_cnt.inc_count);
       if (parent->val == root->val + 1) cur_cnt.dec_count = 1 + max(left_cnt.dec_count, right_cnt.dec_count);
     }
-
 
     max_count = max(max_count, max(1 + left_cnt.inc_count + right_cnt.dec_count,
                                    1 + left_cnt.dec_count + right_cnt.inc_count));
