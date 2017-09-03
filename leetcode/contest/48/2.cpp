@@ -53,6 +53,11 @@ struct TreeNode {
 };
 
 
+// - if the root node is in between [L, R], then trim root->left &
+//   root->right recursively.
+// - if root node is < L, then trim root->right recursively.
+// - if root node is > R, then trim root->left recursively
+
 class Solution {
 public:
   TreeNode* trimBST(TreeNode* root, int L, int R) {
@@ -67,6 +72,23 @@ public:
     } else if (root->val > R) {
       return trimBST(root->left, L, R);
     }
+  }
+};
+
+
+// improved code quality
+
+class Solution2 {
+public:
+  TreeNode* trimBST(TreeNode* root, int L, int R) {
+    if (!root || L > R) return root;
+
+    if (root->val < L) return trimBST(root->right, L, R);
+    if (root->val > R) return trimBST(root->left, L, R);
+
+    root->left = trimBST(root->left, L, R);
+    root->right = trimBST(root->right, L, R);
+    return root;
   }
 };
 
