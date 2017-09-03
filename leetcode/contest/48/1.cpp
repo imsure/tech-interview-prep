@@ -41,6 +41,9 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// time: O(NlogN)
+// space: O(N)
+
 class Solution {
 private:
   void preorder(TreeNode* root, vector<int>& list, int prev) {
@@ -59,6 +62,76 @@ public:
 
     if (list.size() < 2) return -1;
     return list[1];
+  }
+};
+
+
+// use set instead of vector. set is ordered and automatically deals
+// with duplicates.
+
+// time: O(NlogN), set insertion is logN in average.
+// space: O(N)
+
+class Solution2 {
+private:
+  void preorder(TreeNode* root, set<int>& val_set) {
+    if (!root) return;
+    val_set.insert(root->val);
+    preorder(root->left, val_set);
+    preorder(root->right, val_set);
+  }
+
+public:
+  int findSecondMinimumValue(TreeNode* root) {
+    set<int> val_set;
+    preorder(root, val_set);
+
+    if (val_set.size() < 2) return -1;
+    auto it = val_set.begin();
+    ++it;
+    return *it;
+  }
+};
+
+// pre-order traverse the tree, and update both smallest and 2nd
+// smallest value along the way.
+
+// time: O(N)
+// space: O(N)
+
+class Solution3 {
+private:
+  void preorder(TreeNode* root, pair<int, int>& p) {
+    if (!root) return;
+
+    if (p.first < 0) {
+      p.first = root->val;
+    } else if (p.second < 0) {
+      if (root->val < p.first) {
+        p.second = p.first;
+        p.first = root->val;
+      } else if (root->val > p.first) {
+        p.second = root->val;
+      }
+    } else {
+      if (root->val < p.first) {
+        p.second = p.first;
+        p.first= root->val;
+      } else if (root->val > p.first && root->val < p.second) {
+        p.second = root->val;
+      }
+    }
+
+    preorder(root->left, p);
+    preorder(root->right, p);
+  }
+
+public:
+  int findSecondMinimumValue(TreeNode* root) {
+    pair<int, int> p (-1, -1);
+    preorder(root, p);
+
+    return p.second;
   }
 };
 
