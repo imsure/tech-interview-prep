@@ -63,8 +63,63 @@ public:
   }
 };
 
+// Store each digits into a vector and map positions to digits.
+// e.g., for num = 2736, we have [6,3,7,2] and {0:6, 1:3, 2:7, 3:2}.
+// Then sort the vector: [2,3,6,7] so that we can pick up the largest digit later.
+// Next, scan from the highest postion to lowest position:
+// - if the highest digit is the largest digit, then update the largest digit
+//   and move on to the next position
+// - if not, then find out the smallest position of the largest digit and swap the two
+//   digits
+// Finally, recontruct the result from the map.
+
+// improved code quality
+
+class Solution2 {
+public:
+  int maximumSwap(int num) {
+    if (num < 10) return num;
+
+    unordered_map<int, int> pos2digit;
+    int d, pos = 0;
+    vector<int> digits;
+    while (num) {
+      d = num - 10 * (num/10);
+      digits.push_back(d);
+      pos2digit[pos++] = d;
+      num = num / 10;
+    }
+
+    sort(digits.begin(), digits.end());
+    int cur_max = digits[pos-1];
+    for (int i = pos-1; i >= 0; --i) {
+      if (pos2digit[i] != cur_max) {
+        d = pos2digit[i];
+        pos2digit[i] = cur_max;
+        int smallest_pos = numeric_limits<int>::max();
+        for (auto& kv : pos2digit) {
+          if (kv.second == cur_max) {
+            smallest_pos = min(smallest_pos, kv.first);
+          }
+        }
+        pos2digit[smallest_pos] = d;
+        break;
+      } else {
+        cur_max = digits[i-1];
+      }
+    }
+
+    int ret = 0;
+    for (int i = 0; i < pos; ++i) {
+      ret += pos2digit[i] * pow(10, i);
+    }
+
+    return ret;
+  }
+};
+
 int main()
 {
-  Solution sol;
+  Solution2 sol;
   cout << sol.maximumSwap(2993) << endl;
 }
