@@ -1,7 +1,12 @@
 #include "common.hpp"
 
-// time:
-// space:
+// one pass: use two indexes to keep track of the most recent occurrences of word1
+// and word2 and update absolute distance along the way. At the end, we are guaranteed
+// with the shortest distance.
+
+// time: O(n)
+// space: O(1)
+
 class Solution {
 public:
   int shortestDistance(vector<string>& words, string word1, string word2) {
