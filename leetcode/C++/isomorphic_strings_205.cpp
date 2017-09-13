@@ -26,6 +26,28 @@ public:
   }
 };
 
+
+// better solution
+
+class Solution2 {
+public:
+  bool isIsomorphic(string s, string t) {
+    vector<char> table1 (256, 0);
+    vector<char> table2 (256, 0);
+
+    for (int i = 0; i < s.size(); ++i) {
+      if (!table1[s[i]] && !table2[t[i]]) {
+        table1[s[i]] = t[i];
+        table2[t[i]] = s[i];
+      } else {
+        if (table1[s[i]] != t[i] || table2[t[i]] != s[i]) return false;
+      }
+    }
+
+    return true;
+  }
+};
+
 int main()
 {
   Solution sol;
