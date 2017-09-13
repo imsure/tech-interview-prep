@@ -73,6 +73,32 @@ public:
   }
 };
 
+
+// improved one pass solution, no need to store a list of indexes for repeated elements
+
+class Solution3 {
+public:
+  vector<int> twoSum(vector<int>& numbers, int target) {
+    vector<int> indices;
+    unordered_map<int, int> diff2index;
+
+    int len = numbers.size();
+    int diff;
+    for (int i = 0; i < len; ++i) {
+      diff = target - numbers[i];
+      if (diff2index.find(diff) != diff2index.end()) {
+        indices.push_back(diff2index[diff]);
+        indices.push_back(i);
+        break;
+      }
+      diff2index[numbers[i]] = i;
+    }
+
+    return indices;
+  }
+};
+
+
 int main()
 {
   Solution2 sol;
