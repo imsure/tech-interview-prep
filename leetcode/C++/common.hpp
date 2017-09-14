@@ -16,5 +16,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <list>
+#include <functional>     // std::greater
 
 using namespace std;
