@@ -61,6 +61,40 @@ public:
   }
 };
 
+
+// another way of doing exhuastive search:
+// each time isolate the last element from the rest of the input,
+// then recursively find subsets that contains this element and subsets that do not contain this element
+// until we've exhausted all elements.
+
+// This thought process results in more easy-to-understand code and also make it
+// easier to analyze time complexity. (since each time we branch out two recursively calls,
+// and recursion goes to depth of n, so time complexity is O(2^n)).
+
+class Solution2 {
+private:
+  void recSubsets(vector<int> sofar, vector<int> rest, vector<vector<int>>& res) {
+    if (rest.empty()) {
+      res.push_back(sofar);
+      return;
+    }
+
+    int last_elem = rest[rest.size()-1];
+    rest.pop_back();
+    vector<int> sofar2 (sofar);
+    sofar2.push_back(last_elem);
+    recSubsets(sofar2, rest, res);
+    recSubsets(sofar, rest, res);
+  }
+
+public:
+  vector<vector<int>> subsets(vector<int>& nums) {
+    vector<vector<int>> res;
+    recSubsets(vector<int>(), nums, res);
+    return res;
+  }
+};
+
 int main()
 {
   vector<int> nums {1,2,3};
