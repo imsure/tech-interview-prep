@@ -36,10 +36,45 @@ public:
   }
 };
 
+
+class Solution2 {
+private:
+  void _permute(vector<int>& nums, int pos, unordered_set<int> visited,
+                vector<vector<int>>& res) {
+    if (pos == nums.size()) {
+      res.push_back(nums);
+      return;
+    }
+
+    for (int i = pos; i < nums.size(); ++i) {
+      if (visited.count(nums[i])) continue;
+
+      std::swap(nums[pos], nums[i]);
+      unordered_set<int> visited_next;
+      _permute(nums, pos+1, visited_next, res);
+      std::swap(nums[pos], nums[i]);
+
+      visited.insert(nums[i]);
+    }
+  }
+
+public:
+  vector<vector<int>> permuteUnique(vector<int>& nums) {
+    vector<vector<int>> res;
+    if (nums.size() == 0) return res;
+
+    unordered_set<int> visited;
+    std::sort(nums.begin(), nums.end());
+    _permute(nums, 0, visited, res);
+    return res;
+  }
+};
+
+
 int main()
 {
   vector<int> nums {2,2,1,1};
-  Solution sol;
+  Solution2 sol;
   vector<vector<int>> ps = sol.permuteUnique(nums);
   for (auto& p : ps) {
     for (auto i : p) {
