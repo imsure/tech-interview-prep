@@ -61,10 +61,44 @@ public:
   }
 };
 
+
+// more concise solution without doing binary search
+
+class Solution2 {
+public:
+  vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+    vector<Interval> ans;
+    int len = intervals.size();
+    int i = 0;
+
+    // push each interval whose end is less newInterval's start
+    while (i < len && intervals[i].end < newInterval.start) {
+      ans.push_back(intervals[i++]);
+    }
+
+    // merge intervals that overlap with newInterval
+    // overlapping boundary senarios:
+    //        |----|
+    //    |---|    |----|
+    while (i < len && intervals[i].end >= newInterval.start && intervals[i].start <= newInterval.end) {
+      newInterval.start = min(newInterval.start, intervals[i].start);
+      newInterval.end = max(newInterval.end, intervals[i].end);
+      ++i;
+    }
+    ans.push_back(newInterval);
+
+    while (i < len) {
+      ans.push_back(intervals[i++]);
+    }
+
+    return ans;
+  }
+};
+
 int main()
 {
   vector<Interval> input {Interval(1,3), Interval(6,9)};
-  Solution sol;
+  Solution2 sol;
   vector<Interval> output = sol.insert(input, Interval(7,10));
   for (auto& i : output) {
     cout << i.start << ',' << i.end << endl;
