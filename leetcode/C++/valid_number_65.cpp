@@ -48,19 +48,60 @@ public:
   }
 };
 
+
+class Solution2 {
+public:
+  bool isNumber(string s) {
+    if (s.empty()) return false;
+
+    int i;
+    int n = s.size();
+    for (i = 0; i < n && s[i] == ' '; ++i) ; // skip the leading whitespaces
+
+    if (i >= n) return false;
+    else if (s[i] == '+' || s[i] == '-') ++i; // skip the + or - sign if any
+
+    if (i >= n) return false;
+    else {
+      int n_digits = 0, n_dots = 0;
+      for (; i < n && ((s[i] <= '9' && s[i] >= '0') || s[i] == '.'); ++i) {
+        s[i] == '.' ? ++n_dots : ++n_digits;
+      }
+
+      if (n_dots > 1 || n_digits < 1) return false;
+
+      if (i >= n) return true;
+      if (s[i] == 'e') {
+        ++i;
+        if (i >= n) return false;
+        else if (s[i] == '+' || s[i] == '-') ++i; // skip the + or - sign if any
+
+        int n_digits = 0;
+        for (; i < n && (s[i] <= '9' && s[i] >= '0'); ++i) {
+          ++n_digits;
+        }
+        if (n_digits < 1) return false;
+      }
+    }
+
+    for (; i < n && s[i] == ' '; ++i) ; // skip the trailing whitespaces
+    return i == n;
+  }
+};
+
 int main()
 {
-  Solution sol;
-  cout << sol.isNumber("   ") << endl;
-  cout << sol.isNumber(" 3.14 ") << endl;
-  cout << sol.isNumber(" 3.14e100 ") << endl;
-  cout << sol.isNumber(" 3.14e-5 ") << endl;
-  cout << sol.isNumber(" 3.14e-5.6 ") << endl;
-  cout << sol.isNumber(" 3.14e- ") << endl;
-  cout << sol.isNumber(" 314e+. ") << endl;
-  cout << sol.isNumber(" 314e+8") << endl;
-  cout << sol.isNumber(" 314e +8") << endl;
-  cout << sol.isNumber(".314e+8") << endl;
-  cout << sol.isNumber("-.314e+8") << endl;
-  cout << sol.isNumber("e+8") << endl;
+  Solution2 sol;
+  cout << sol.isNumber("   ") << endl;        // 0
+  cout << sol.isNumber(" 3.14 ") << endl;     // 1
+  cout << sol.isNumber(" 3.14e100 ") << endl; // 1
+  cout << sol.isNumber(" 3.14e-5 ") << endl;  // 1
+  cout << sol.isNumber(" 3.14e-5.6 ") << endl;// 0
+  cout << sol.isNumber(" 3.14e- ") << endl;   // 0
+  cout << sol.isNumber(" 314e+. ") << endl;   // 0
+  cout << sol.isNumber(" 314e+8") << endl;    // 1
+  cout << sol.isNumber(" 314e +8") << endl;   // 0
+  cout << sol.isNumber(".314e+8") << endl;    // 1
+  cout << sol.isNumber("-.314e+8") << endl;   // 1
+  cout << sol.isNumber("e+8") << endl;        // 0
 }
