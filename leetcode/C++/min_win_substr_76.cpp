@@ -124,14 +124,26 @@ public:
 
     while (end < s.size()) {
       if (table[s[end++]]-- > 0) {
+        // only decrement counter if s[end] is in t and
+        // its current value in the table is > 0 (which indicates that s[end]
+        // is not in the current window).
         counter--; // s[end] is in t
       }
 
+      // counter is 0 means a valid window has been found, but note that
+      // before entering the loop begin may not necessarily point to the
+      // start of the current minimum window, thus what we do in the loop
+      // is to move begin to the desired location.
       while (counter == 0) { // within a valid window
-        if (end - begin < min_len) {
+        if (end - begin < min_len) { // update min_len
           head = begin;
           min_len = end - head;
         }
+
+        // once a window is found, table[s[begin]] <= 0 if s[begin] is also in t.
+        // table[s[begin]] < 0 if s[begin] is not in t.
+        // table[s[begin]] < 0 if s[begin] is in t happens when more than one s[begin]
+        // appear at the start of the window consecutively. e.g., s = 'aab' and t = 'ab'.
         if (table[s[begin++]]++ == 0) counter++; // invalidate if true
       }
     }
