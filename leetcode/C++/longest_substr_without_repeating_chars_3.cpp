@@ -94,4 +94,5 @@ int main()
   cout << sol.lengthOfLongestSubstring("cabcdef") << endl;
   cout << sol.lengthOfLongestSubstring("abcde") << endl;
   cout << sol.lengthOfLongestSubstring("axropfaujpkfgeqohbtvqpzekndgikpkjhyzmbvxqfdyjtnsvinnznujczrmlhwvqxweyr") << endl;
+  cout << sol.lengthOfLongestSubstring("axropfaujpkfgeqohbtvqpzekndgikpkjhyzmbvxqfdyjtnsvinnznujczrmlhwvqxweyr&*#)(%&)$(*&%)$&afdjafjapoifjaadfkjakl;dfja;ldddddffffff4444444iiiiiiioooooooo444444444&()&*()&)(*&)(&JJL:ll;jaf;djaf:LKKKLOKLKFPOIDJFOPDSIJFFOJSDPF)fjafkjafdja;fkja;ldfkja;ifjapgijapgoiuapgjapgipagQWERTYUIOPLKJHGFDSAZXCVBNM") << endl;
 }
