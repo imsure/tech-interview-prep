@@ -27,6 +27,9 @@ public:
   }
 };
 
+
+// set + two pointers
+
 class Solution2 {
 public:
   int lengthOfLongestSubstring(string s) {
@@ -52,9 +55,37 @@ public:
   }
 };
 
+
+// vector + two pointers
+
+class Solution3 {
+public:
+  int lengthOfLongestSubstring(string s) {
+    vector<bool> table (128, false);
+    int start = 0, end, max_len = 0;
+    for (end = 0; end < s.size(); ++end) {
+      if (!table[s[end]]) {
+        table[s[end]] = true; // remember chars that are in the current substr (without repeating ones)
+        max_len = max(max_len, end - start + 1);
+      } else { // a repeating char is found
+        while (start < end) { // move start to point to the char that is right next to the repeated one
+          if (s[start++] == s[end]) {
+            break;
+          } else {
+            // erase all the chars before the repeated one so that they can be added into the set again
+            table[s[start-1]] = false;
+          }
+        }
+      }
+    }
+
+    return max_len;
+  }
+};
+
 int main()
 {
-  Solution2 sol;
+  Solution3 sol;
   cout << sol.lengthOfLongestSubstring("") << endl;
   cout << sol.lengthOfLongestSubstring("abcabcbb") << endl;
   cout << sol.lengthOfLongestSubstring("bbb") << endl;
