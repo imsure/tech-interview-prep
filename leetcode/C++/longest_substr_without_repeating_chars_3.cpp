@@ -83,9 +83,49 @@ public:
   }
 };
 
+
+// same idea as above, but with a more clear sliding window thought process.
+
+// for each i, find the max sliding window [i, j) where all the chars in the window
+// are unique. Use a hashmap to remember all the chars in the current window,
+// once we see a repeated char, move i forward until the repeated one becomes
+// unique in the updated window.
+
+class Solution4 {
+public:
+  int lengthOfLongestSubstring(string s) {
+    vector<bool> table (128, false);
+    int i = 0, j = 0, n = s.size();
+    int max_len = 0;
+    while (i < n && j < n) {
+      if (!table[s[j]]) {
+        table[s[j]] = true;
+        // expand the window starting at i
+        ++j; max_len = max(max_len, j - i);
+      } else {
+        // max window has been found at i, move i to the next postition
+        table[s[i++]] = false;
+      }
+    }
+
+    return max_len;
+  }
+};
+
+
+// optimized to avoid forwarding i one by one by storing indexes for
+// each char in the window so that we can advance i with only one step.
+
+class Solution5 {
+public:
+  int lengthOfLongestSubstring(string s) {
+  }
+};
+
+
 int main()
 {
-  Solution3 sol;
+  Solution4 sol;
   cout << sol.lengthOfLongestSubstring("") << endl;
   cout << sol.lengthOfLongestSubstring("abcabcbb") << endl;
   cout << sol.lengthOfLongestSubstring("bbb") << endl;
