@@ -54,13 +54,50 @@ public:
   }
 };
 
+class Solution2 {
+public:
+  vector<string> fullJustify(vector<string>& words, int maxWidth) {
+    vector<string> ans;
+    int n = words.size();
+
+    if (n == 0 || maxWidth < 0) return ans;
+
+    // find out words[i] to words[i+k-1] that fit within one line
+    for (int i = 0, k, len; i < n; i += k) {
+      for (k = 0, len = 0; i + k < n && len + words[i+k].size() <= maxWidth - k; ++k) {
+        len += words[i+k].size();
+      }
+      // fill words[i] to words[i+k-1] to the current line
+      string line = "";
+      if (k == 1) line += words[i] + string(maxWidth - len, ' '); // line contains a single word
+      else {
+        // figure out the distribution of whitespaces
+        int wsize = maxWidth - len;
+        vector<int> wdist (k-1, wsize / (k-1));
+        for (int m = 0; m < wsize % (k-1); ++m) {
+          wdist[m]++;
+        }
+        for (int j = i; j < i + k; ++j) {
+          if (i + k >= n) line += words[j] + " "; // last line
+          else line += words[j] + string(wdist[j-i], ' ');
+        }
+
+        if (i + k >= n) line += string(maxWidth-len-k, ' ');
+      }
+      ans.push_back(line);
+    }
+
+    return ans;
+  }
+};
 
 int main()
 {
   Solution sol;
   // vector<string> words {"This", "is", "an", "example", "of", "text", "justification."};
-  vector<string> words {"Don't","go","around","saying","the","world","owes","you","a","living;","the","world","owes","you","nothing;","it","was","here","first."};
-  vector<string> text = sol.fullJustify(words, 30);
+  // vector<string> words {"Don't","go","around","saying","the","world","owes","you","a","living;","the","world","owes","you","nothing;","it","was","here","first."};
+  vector<string> words {"What","must","be","shall","be."};
+  vector<string> text = sol.fullJustify(words, 12);
   for (auto s : text) {
     cout << s << endl;
   }
