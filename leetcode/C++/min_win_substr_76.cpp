@@ -66,6 +66,8 @@ public:
 };
 
 
+// correct solution using hashmap + two pointers
+
 class Solution2 {
 public:
   string minWindow(string s, string t) {
@@ -106,11 +108,42 @@ public:
   }
 };
 
+// use a vector as a hashmap because we know that the key space is in between
+// 0 and 127 (ascii characters) to speed up performance.
+
+class Solution3 {
+public:
+  string minWindow(string s, string t) {
+    if (t.size() > s.size()) return "";
+
+    vector<int> table (128, 0);
+    for (auto c : t) table[c]++;
+
+    int begin = 0, end = 0, counter = t.size(), head;
+    int min_len = numeric_limits<int>::max();
+
+    while (end < s.size()) {
+      if (table[s[end++]]-- > 0) {
+        counter--; // s[end] is in t
+      }
+
+      while (counter == 0) { // within a valid window
+        if (end - begin < min_len) {
+          head = begin;
+          min_len = end - head;
+        }
+        if (table[s[begin++]]++ == 0) counter++; // invalidate if true
+      }
+    }
+
+    return min_len == numeric_limits<int>::max() ? "" : s.substr(head, min_len);
+  }
+};
 
 int main()
 {
-  Solution2 sol;
-  string s = "ADOBECODEBANC", t = "ABC";
-  // string s = "aa", t = "aa";
+  Solution3 sol;
+  // string s = "ADOBECODEBANC", t = "ABC";
+  string s = "aa", t = "aa";
   cout << sol.minWindow(s, t) << endl;
 }
