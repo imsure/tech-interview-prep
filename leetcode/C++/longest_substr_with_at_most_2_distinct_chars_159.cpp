@@ -73,4 +73,5 @@ int main()
   cout << sol.lengthOfLongestSubstringTwoDistinct("aaaa") << endl;
   cout << sol.lengthOfLongestSubstringTwoDistinct("aaaabbbccccc") << endl;
   cout << sol.lengthOfLongestSubstringTwoDistinct("BabBbBbBbbABBABBbAabbbABBaBbBabaabBbbBAAaaAbbAABaAbBBaAaaaaBABbaBbAAbBBbbABBaaBBbab") << endl;
+  cout << sol.lengthOfLongestSubstringTwoDistinct("abcabcabc") << endl;
 }
