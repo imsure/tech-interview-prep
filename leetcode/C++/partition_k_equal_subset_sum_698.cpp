@@ -76,12 +76,53 @@ public:
   }
 };
 
+// another backtracking approach using an visited array
+
+class Solution3 {
+private:
+  bool search(vector<int>& nums, int start, vector<bool>& visited,
+              int target, int k, int cur_sum) {
+    if (k == 1) return true;
+    if (cur_sum == target) return search(nums, 0, visited, target, k-1, 0);
+
+    for (int i = start; i < nums.size(); ++i) {
+      if (visited[i]) continue;
+
+      if (cur_sum + nums[i] <= target) {
+        visited[i] = true;
+        if (search(nums, i+1, visited, target, k, cur_sum + nums[i])) return true;
+        visited[i] = false;
+      }
+    }
+
+    return false;
+  }
+
+public:
+  bool canPartitionKSubsets(vector<int>& nums, int k) {
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; ++i) sum += nums[i];
+    if (sum % k) return false;
+    int target = sum / k;
+
+    // Sorting the array would make the performance really bad here!
+    // sort(nums.begin(), nums.end());
+    // if (nums[n-1] > target) return false;
+
+    vector<bool> visited (n, false);
+    return search(nums, 0, visited, target, k, 0);
+  }
+};
+
+
 int main()
 {
   // vector<int> nums {4, 3, 2, 3, 5, 2, 1};
   // vector<int> nums {960,3787,1951,5450,4813,752,1397,801,1990,1095,3643,8133,893,5306,8341,5246};
   // vector<int> nums {2,3,3};
-  vector<int> nums {1,1,3,3};
-  Solution2 sol;
-  cout << sol.canPartitionKSubsets(nums, 2) << endl;
+  // vector<int> nums {1,1,3,3};
+  vector<int> nums {4,5,3,2,5,5,5,1,5,5,5,5,3,5,5,2};
+  Solution3 sol;
+  cout << sol.canPartitionKSubsets(nums, 13) << endl;
 }
