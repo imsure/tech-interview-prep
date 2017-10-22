@@ -44,7 +44,7 @@
 //   two-pointer techinque to idenfity the only possbile influcener with a linear scan of A.
 //   Let A.size = m and i = 0 and j = 1.
 //   if m == 1, then we just need to scan column A[0] to see if A[0] is the influencer.
-//   if m > 1, then we look at M[A[i]A[i+1]] and M[A[i+1]A[i]]. Four cases to consider:
+//   if m > 1, then we look at M[A[i]A[j]] and M[A[j]A[i]]. Four cases to consider:
 //   - A[i] and A[j] do not follow each other, thus they both cannot be influencer. Let i = j+1 and j = i+1
 //   - A[i] and A[j] follow each other, thus they both cannot be influencer. Let i = j+1 and j = i+1
 //   - A[i] follows A[j] and A[j] does not follow A[i]. Let i = j and j = i+1.
