@@ -1,6 +1,8 @@
 /**
- * Problem: given a string s, find all palindromes contained
- * within s where each palindrome is a subsequence (not necessarily to be a substr) of s.
+ * Problem: given a string s, find all palindromes subsequences in s.
+ *
+ * Note that a subsequence of a string s is obtained by deleting 0 or more
+ * characters (not necessarily to be consecutive) from s.
  *
  * e.g., for s = "abcabc", output would be:
  * a, b, c, aa, bb, cc, aba, aca, bcb, bab, cac, cbc
