@@ -1,6 +1,6 @@
 /**
  * Problem: given a string s, find all palindromes contained
- * within s where each palindrome is a subsequence (not substr) of s.
+ * within s where each palindrome is a subsequence (not necessarily to be a substr) of s.
  *
  * e.g., for s = "abcabc", output would be:
  * a, b, c, aa, bb, cc, aba, aca, bcb, bab, cac, cbc
@@ -30,7 +30,18 @@ private:
             ans_set.insert(string(1, s[i]) + p + string(1, s[i]));
           }
         }
-      } else {
+      } else { // no char matches s[i]
+        // Here there are two cases to deal with:
+        // i is the position of the char that is being matched, if no match is found,
+        // in case 1 where i == end, since we are going to search the next
+        // char at position i+1, we'd want to set when_to_end at i+1 too.
+        // e.g., s = "abc"
+
+        // in case 2 where end is greater i, this means end must be pointing at some
+        // char that matches some char before position i, in this case, we don't want
+        // to advance when_to_end.
+        // e.g., s = "abcac"
+
         if (i == end) when_to_end = end + 1;
         else when_to_end = end;
       }
@@ -61,7 +72,9 @@ int main()
   // vector<string> ans = sol.findAllPalindromes("abcac");
   // vector<string> ans = sol.findAllPalindromes("abc");
   // vector<string> ans = sol.findAllPalindromes("abbcca");
-  vector<string> ans = sol.findAllPalindromes("abbbba");
+  // vector<string> ans = sol.findAllPalindromes("abbbba");
+  // vector<string> ans = sol.findAllPalindromes("abcad");
+  vector<string> ans = sol.findAllPalindromes("abcaded");
   for (auto s : ans) {
     cout << s << endl;
   }
