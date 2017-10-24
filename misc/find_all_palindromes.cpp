@@ -94,7 +94,8 @@ int main()
   // vector<string> ans = sol.findAllPalindromes("abcad");
   // vector<string> ans = sol.findAllPalindromes("abcaded");
   // vector<string> ans = sol.findAllPalindromes("abccb");
-  vector<string> ans = sol.findAllPalindromes("abcbac");
+  // vector<string> ans = sol.findAllPalindromes("abcbac");
+  vector<string> ans = sol.findAllPalindromes("ACGATGTAC");
   for (auto s : ans) {
     cout << s << endl;
   }
