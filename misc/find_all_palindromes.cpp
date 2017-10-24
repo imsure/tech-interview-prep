@@ -8,6 +8,22 @@
 
 #include "common.hpp"
 
+// Approach: for each char 'c' in s from start to end, put 'c' into the answer set and
+// scan s backwards to see if there is another 'c' in s, if yes, put 'cc' into the answer
+// set and recursively find all palindromes of the substr between two 'c's, augment
+// the returned answer by prefixing a 'c' and appending a 'c' for each palindromes in the substr.
+
+// e.g., s = "abca", we find two 'a's at 0 and 3, put "a" and "aa" into answer set,
+// then we recursively find all palindromes of "bc" which is "b" and "c", we expend to include "aba" and "abc".
+
+// Note that for each char we don't have to scan from the last char all the way back to the first char,
+// we just need to remember the position of the char that matches the previous char and stop right there.
+// e.g., s = "abcbac"
+//            ^   ^
+//            0   4
+// we've found two a's at 0 and 4, when we scan for b at 1, we stop as we see a at 4, because we've already
+// solved the substr "bcb" in between two a's at 0 and 4, there is not need to do it again.
+
 class Solution {
 private:
   unordered_set<string> _findAllPalindromes(string s, int when_to_end) {
@@ -74,7 +90,9 @@ int main()
   // vector<string> ans = sol.findAllPalindromes("abbcca");
   // vector<string> ans = sol.findAllPalindromes("abbbba");
   // vector<string> ans = sol.findAllPalindromes("abcad");
-  vector<string> ans = sol.findAllPalindromes("abcaded");
+  // vector<string> ans = sol.findAllPalindromes("abcaded");
+  // vector<string> ans = sol.findAllPalindromes("abccb");
+  vector<string> ans = sol.findAllPalindromes("abcbac");
   for (auto s : ans) {
     cout << s << endl;
   }
