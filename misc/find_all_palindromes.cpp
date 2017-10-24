@@ -16,7 +16,7 @@
 // the returned answer by prefixing a 'c' and appending a 'c' for each palindromes in the substr.
 
 // e.g., s = "abca", we find two 'a's at 0 and 3, put "a" and "aa" into answer set,
-// then we recursively find all palindromes of "bc" which is "b" and "c", we expend to include "aba" and "abc".
+// then we recursively find all palindromes of "bc" which is "b" and "c", we expend to include "aba" and "aca".
 
 // Note that for each char we don't have to scan from the last char all the way back to the first char,
 // we just need to remember the position of the char that matches the previous char and stop right there.
