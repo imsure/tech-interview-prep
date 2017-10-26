@@ -116,13 +116,58 @@ public:
 };
 
 
+// DP approach
+
+class Solution4 {
+public:
+  bool canPartitionKSubsets(vector<int>& nums, int k) {
+    int n = nums.size();
+    if (!n) return false;
+    int sum = 0;
+    for (int i = 0; i < n; ++i) sum += nums[i];
+    if (sum % k) return false;
+    int target = sum / k;
+
+    int num_states = 1 << n;
+    vector<bool> states_eval (num_states, false); // states_eval[1<<n - 1] would be the final anwser
+    states_eval[0] = true;
+    vector<int> states_total (num_states, 0);
+
+    // fill the tables bottom-up
+    for (int state = 0; state < num_states; ++state) {
+      if (!states_eval[state]) continue;
+
+      // see if we can put nums[i] in given the current state
+      for (int i = 0; i < n; ++i) {
+        int future_state = state | 1 << i;
+        if (future_state != state && !states_eval[future_state]) {
+          if (nums[i] <= (sum - states_total[state] - 1) % target  + 1) {
+            states_eval[future_state] = true;
+            states_total[future_state] = states_total[state] + nums[i];
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    return states_eval[num_states - 1];
+  }
+};
+
 int main()
 {
-  // vector<int> nums {4, 3, 2, 3, 5, 2, 1};
-  // vector<int> nums {960,3787,1951,5450,4813,752,1397,801,1990,1095,3643,8133,893,5306,8341,5246};
-  // vector<int> nums {2,3,3};
-  // vector<int> nums {1,1,3,3};
-  vector<int> nums {4,5,3,2,5,5,5,1,5,5,5,5,3,5,5,2};
-  Solution3 sol;
-  cout << sol.canPartitionKSubsets(nums, 13) << endl;
+  vector<int> nums0 {}; // false
+  vector<int> nums1 {4, 3, 2, 3, 5, 2, 1}; // k = 4, true
+  vector<int> nums2 {960,3787,1951,5450,4813,752,1397,801,1990,1095,3643,8133,893,5306,8341,5246}; // k = 3, true
+  vector<int> nums3 {2,3,3}; // k = 2, false
+  vector<int> nums4 {1,1,3,3}; // k = 2, true
+  vector<int> nums5 {4,5,3,2,5,5,5,1,5,5,5,5,3,5,5,2}; // k = 13, true
+  Solution4 sol;
+  cout << sol.canPartitionKSubsets(nums0, 2) << endl;
+  cout << sol.canPartitionKSubsets(nums1, 4) << endl;
+  cout << sol.canPartitionKSubsets(nums2, 3) << endl;
+  cout << sol.canPartitionKSubsets(nums3, 2) << endl;
+  cout << sol.canPartitionKSubsets(nums4, 2) << endl;
+  cout << sol.canPartitionKSubsets(nums5, 13) << endl;
 }
