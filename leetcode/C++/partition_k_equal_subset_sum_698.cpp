@@ -142,6 +142,7 @@ public:
         int future_state = state | 1 << i;
         if (future_state != state && !states_eval[future_state]) {
           if (nums[i] <= (sum - states_total[state] - 1) % target  + 1) {
+            if (future_state == num_states-1) return true;
             states_eval[future_state] = true;
             states_total[future_state] = states_total[state] + nums[i];
           } else {
