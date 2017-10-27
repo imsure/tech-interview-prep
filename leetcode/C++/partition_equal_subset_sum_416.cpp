@@ -36,12 +36,49 @@ public:
   }
 };
 
+
+// Backtracking
+
+class Solution2 {
+private:
+  bool search(vector<int>& nums, int start, int target, int curSum) {
+    if (curSum == target) return true;
+
+    for (int i = start; i < nums.size(); ++i) {
+      if (nums[i] > target) return false; // no way to put nums[i] into any subset with sum == target
+
+      if (curSum + nums[i] <= target) {
+        if (search(nums, i+1, target, curSum + nums[i])) return true;
+      }
+    }
+
+    return false;
+  }
+
+public:
+  bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; ++i) sum += nums[i];
+
+    if (sum % 2) return false;
+
+    int target = sum / 2;
+    // sorting the array would significant boost the performance the backtracking
+    sort(nums.rbegin(), nums.rend());
+
+    // search if there is any way to sum a subset of nums to target
+    return search(nums, 0, target, 0);
+  }
+};
+
+
 int main()
 {
   vector<int> nums0 {1, 5, 11, 5}; // true
   vector<int> nums1 {2, 5, 11, 5}; // false
   vector<int> nums2 {3, 7, 5, 7}; // false
-  Solution sol;
+  Solution2 sol;
   cout << sol.canPartition(nums0) << endl;
   cout << sol.canPartition(nums1) << endl;
   cout << sol.canPartition(nums2) << endl;
