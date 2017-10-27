@@ -73,12 +73,39 @@ public:
 };
 
 
+// DP solution with space optimized to a 1d array
+
+class Solution3 {
+public:
+  bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; ++i) sum += nums[i];
+
+    if (sum & 1) return false;
+
+    int target = sum / 2;
+    vector<bool> T (target+1, false);
+    T[0] = true; // sum of empty set is 0
+
+    // fill table backwards (cannot fill forward!)
+    for (int num : nums) {
+      for (int s = target; s > 0; --s) {
+        if (s >= num) T[s] = T[s] || T[s - num];
+      }
+    }
+
+    return T[target];
+  }
+};
+
+
 int main()
 {
   vector<int> nums0 {1, 5, 11, 5}; // true
   vector<int> nums1 {2, 5, 11, 5}; // false
   vector<int> nums2 {3, 7, 5, 7}; // false
-  Solution2 sol;
+  Solution3 sol;
   cout << sol.canPartition(nums0) << endl;
   cout << sol.canPartition(nums1) << endl;
   cout << sol.canPartition(nums2) << endl;
