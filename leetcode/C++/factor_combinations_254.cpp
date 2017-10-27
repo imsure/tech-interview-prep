@@ -30,12 +30,38 @@ public:
   }
 };
 
+
+class Solution2 {
+private:
+  void _getFactors(int start, int n, vector<vector<int>>& ans, vector<int>& path) {
+    for (int i = start; i <= sqrt(n); ++i) {
+      if (n % i) continue;
+
+      path.push_back(i);
+      path.push_back(n/i);
+      ans.push_back(path);
+      path.pop_back();
+      _getFactors(i, n/i, ans, path);
+      path.pop_back();
+    }
+  }
+
+public:
+  vector<vector<int>> getFactors(int n) {
+    vector<vector<int>> ans;
+    vector<int> path;
+    _getFactors(2, n, ans, path);
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution sol;
+  Solution2 sol;
   // vector<vector<int>> ans = sol.getFactors(32);
-  // vector<vector<int>> ans = sol.getFactors(24);
-  vector<vector<int>> ans = sol.getFactors(18);
+  vector<vector<int>> ans = sol.getFactors(24);
+  // vector<vector<int>> ans = sol.getFactors(18);
   for (auto l : ans) {
     for (int n : l) cout << n << ' ';
     cout << endl;
