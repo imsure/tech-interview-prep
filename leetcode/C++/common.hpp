@@ -17,5 +17,6 @@
 #include <unistd.h>
 #include <list>
 #include <functional>     // std::greater
+#include <bitset>
 
 using namespace std;

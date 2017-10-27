@@ -100,6 +100,42 @@ public:
 };
 
 
+// O(n) bitset solution
+
+class Solution4 {
+public:
+  bool canPartition(vector<int>& nums) {
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n; ++i) sum += nums[i];
+
+    if (sum & 1) return false;
+
+    int target = sum / 2;
+    const int MAX_VAL = 100;
+    const int MAX_SIZE = 200;
+    bitset<MAX_VAL * MAX_SIZE/2 + 1> bits(1);
+
+    //       876543210
+    // bits: 000000001
+    // for nums = [1,6,2,7], target = 8
+    // iteration 1:  876543210
+    //               000000010
+    // iteration 2:  876543210
+    //               010000010
+    // iteration 3:  876543210 (omit positions > 8)
+    //               010001010
+    // iteration 4:  876543210 (omit positions > 8)
+    //               110001010 (bit on position 8 is 1 means that there exist some subset sum to target)
+    for (int num : nums) {
+      bits |= bits << num;
+    }
+
+    return bits[target] == 1 ? true : false;
+  }
+};
+
+
 int main()
 {
   vector<int> nums0 {1, 5, 11, 5}; // true
