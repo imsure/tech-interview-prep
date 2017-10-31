@@ -106,14 +106,39 @@ public:
 };
 
 
+class Solution4 {
+public:
+  int findLength(vector<int>& A, vector<int>& B) {
+    int m = A.size();
+    int n = B.size();
+    int max_len = 0;
+
+    auto dp_ptr = new vector<vector<int>>(m+1, vector<int> (n+1, 0));
+    auto dp = *dp_ptr;
+    // dp[i][j] is the answer to A[0...i) and B(0...j), i.e., the max length of repeated subarray ends at A[i-1] and B[j-1]
+    // dp[i][j] = 0 if A[i-1] != B[j-1], otherwise dp[i][j] = 1 + dp[i-1][j-1]
+    for (int i = 1; i <= m; ++i) {
+      for (int j = 1; j <=n; ++j) {
+        if (A[i-1] != B[j-1]) dp[i][j] = 0;
+        else {
+          dp[i][j] = 1 + dp[i-1][j-1];
+          max_len = max(max_len, dp[i][j]);
+        }
+      }
+    }
+
+    return max_len;
+  }
+};
+
 int main()
 {
-  Solution3 sol;
+  Solution4 sol;
   // vector<int> A {0,1,1,1,1};
   // vector<int> B {1,0,1,0,1};
-  // vector<int> A {1,2,3,2,1};
-  // vector<int> B {3,2,1,4,7};
-  vector<int> A {0,0,0,0,0,0,1,0,0,0};
-  vector<int> B {0,0,0,0,0,0,0,1,0,0,0};
+  vector<int> A {1,2,3,2,1};
+  vector<int> B {3,2,1,4,7};
+  // vector<int> A {0,0,0,0,0,0,1,0,0,0};
+  // vector<int> B {0,0,0,0,0,0,0,1,0,0,0};
   cout << sol.findLength(A, B) << endl;
 }
