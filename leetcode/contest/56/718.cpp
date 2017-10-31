@@ -78,13 +78,15 @@ private:
     int m = A.size();
     int n = B.size();
     int max_len = 0;
-    vector<int> table (n+1, 0);
 
+    // dp[j]: max len of repeated subarray ends at A[0...i] and B[0...j-1]
+    // dp[j] = 0 if A[i] != B[j-1], otherwise dp[j] = 1 + dp[j-1] (max len of repeated subarray ends at A[0...i-1] and B[0...j-2])
+    vector<int> dp (n+1, 0);
     for (int i = 0; i < m; ++i) {
       for (int j = n; j >= 1; --j) {
-        if (B[j-1] == A[i]) table[j] = 1 + table[j-1]; // max len of repeated subarray ends at A[i] and B[j-1]
-        else table[j] = 0;
-        max_len = max(max_len, table[j]);
+        if (B[j-1] == A[i]) dp[j] = 1 + dp[j-1]; // max len of repeated subarray ends at A[i] and B[j-1]
+        else dp[j] = 0;
+        max_len = max(max_len, dp[j]);
       }
     }
 
@@ -133,7 +135,7 @@ public:
 
 int main()
 {
-  Solution4 sol;
+  Solution3 sol;
   // vector<int> A {0,1,1,1,1};
   // vector<int> B {1,0,1,0,1};
   vector<int> A {1,2,3,2,1};
