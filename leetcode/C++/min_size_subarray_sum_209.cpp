@@ -58,12 +58,29 @@ public:
     if (!n) return 0;
 
     int min_len = n+1;
+    vector<int> sums (n);
+
+    // sums is sorted!
+    sums[0] = nums[0];
+    for (int i = 1; i < n; ++i) sums[i] = sums[i-1] + nums[i];
+
+    if (sums[n-1] < s) return 0;
+
+    for (int i = 0; i < n; ++i) {
+      int target = s + sums[i] - nums[i];
+      auto lo = std::lower_bound(sums.begin() + i, sums.end(), target);
+      if (lo != sums.end()) {
+        min_len = min(min_len, (int)std::distance(sums.begin()+i, lo+1));
+      }
+    }
+
+    return min_len;
   }
 };
 
 int main()
 {
-  Solution2 sol;
+  Solution3 sol;
   vector<int> nums {2,3,1,2,4,3};
   cout << sol.minSubArrayLen(7, nums) << endl;
 }
