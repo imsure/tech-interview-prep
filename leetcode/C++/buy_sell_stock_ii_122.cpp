@@ -34,9 +34,51 @@ public:
   }
 };
 
+
+// same approach as above, but with better code quality
+
+class Solution2 {
+public:
+  int maxProfit(vector<int>& prices) {
+    int n = prices.size();
+    if (!n) return 0;
+    int peak = prices[0], valley = peak;
+    int max_profit = 0;
+
+    int i = 0;
+    while (i < n-1) {
+      while (i < n-1 && prices[i] >= prices[i+1]) ++i;
+      valley = prices[i];
+      while (i < n-1 && prices[i] <= prices[i+1]) ++i;
+      peak = prices[i];
+      max_profit += peak - valley;
+    }
+
+    return max_profit;
+  }
+};
+
+
+// one pass: keep climbing up the slope as long as next price is greater than
+// the current price.
+
+class Solution3 {
+public:
+  int maxProfit(vector<int>& prices) {
+    int n = prices.size();
+    int max_profit = 0;
+
+    for (int i = 0; i < n-1; ++i) {
+      if (prices[i+1] - prices[i] > 0) max_profit += prices[i+1] - prices[i];
+    }
+
+    return max_profit;
+  }
+};
+
 int main()
 {
-  Solution sol;
+  Solution3 sol;
   vector<int> prices {7, 1, 5, 3, 6, 4};
   cout << sol.maxProfit(prices) << endl;
 
