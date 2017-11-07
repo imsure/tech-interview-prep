@@ -8,6 +8,9 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+// time: exponential due to overlapping computations (similar like resurive solution for fibnacci nums)
+// took 1042 ms to run.
+
 class Solution {
 private:
   int robExclude(TreeNode* root) {
@@ -54,6 +57,29 @@ public:
                max_left + max_right);
   }
 };
+
+
+// time: O(n), n is # of nodes
+
+class Solution3 {
+private:
+  pair<int, int> _rob(TreeNode* root) {
+    pair<int, int> res {0, 0};
+    if (!root) return res;
+    auto lres = _rob(root->left);
+    auto rres = _rob(root->right);
+    res.first = root->val + lres.second + rres.second; // value including root
+    res.second = max(lres.first, lres.second) + max(rres.first, rres.second); // not including root
+    return res;
+  }
+
+public:
+  int rob(TreeNode* root) {
+    auto res = _rob(root);
+    return max(res.first, res.second);
+  }
+};
+
 
 int main()
 {
