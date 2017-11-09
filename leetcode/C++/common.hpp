@@ -18,5 +18,7 @@
 #include <list>
 #include <functional>     // std::greater
 #include <bitset>
+#include <stdio.h>
+#include <string.h> // memset
 
 using namespace std;
