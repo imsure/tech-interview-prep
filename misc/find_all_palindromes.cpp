@@ -87,7 +87,7 @@ int main()
 {
   Solution sol;
   // vector<string> ans = sol.findAllPalindromes("abcabc");
-  // vector<string> ans = sol.findAllPalindromes("abcac");
+  vector<string> ans = sol.findAllPalindromes("abca");
   // vector<string> ans = sol.findAllPalindromes("abc");
   // vector<string> ans = sol.findAllPalindromes("abbcca");
   // vector<string> ans = sol.findAllPalindromes("abbbba");
@@ -95,7 +95,7 @@ int main()
   // vector<string> ans = sol.findAllPalindromes("abcaded");
   // vector<string> ans = sol.findAllPalindromes("abccb");
   // vector<string> ans = sol.findAllPalindromes("abcbac");
-  vector<string> ans = sol.findAllPalindromes("ACGATGTAC");
+  // vector<string> ans = sol.findAllPalindromes("ACGATGTAC");
   for (auto s : ans) {
     cout << s << endl;
   }
