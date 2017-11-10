@@ -104,8 +104,6 @@ private:
   TrieNode* root;
 };
 
-// use a trie (prefix tree)
-
 class Solution2 {
 public:
   string longestWord(vector<string>& words) {
@@ -116,10 +114,40 @@ public:
   }
 };
 
+// Overwrite comparison function to store words in a set (ordered), then
+// iterate through each word in the set in order until we find one.
+
+struct WordCmp {
+  bool operator()(const string& w1, const string& w2) {
+    if (w1.size() > w2.size()) return true;
+    else if (w1.size() < w2.size()) return false;
+    else return w1 < w2;
+  }
+};
+
+class Solution3 {
+public:
+  string longestWord(vector<string>& words) {
+    set<string, WordCmp> word_set (words.begin(), words.end());
+    // set<string> word_set;
+    // for (auto w : words) word_set.insert(w);
+
+    for (auto w : word_set) {
+      int i = w.size() - 1;
+      for (; i > 0; --i) {
+        if (word_set.find(w.substr(0, i)) == word_set.end()) break;
+      }
+      if (i == 0) return w;
+    }
+
+    return "";
+  }
+};
+
 
 int main()
 {
-  Solution2 sol;
+  Solution3 sol;
   // vector<string> words {"w","wo","wor","worl", "world"};
   // vector<string> words {"a", "banana", "app", "appl", "ap", "apply", "apple"};
   vector<string> words {"m","mo","moc","moch","mocha","l","la","lat","latt","latte","c","ca","cat"};
