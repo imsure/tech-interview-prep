@@ -72,15 +72,53 @@ public:
   }
 };
 
+
+// simplified logic and better code quality
+
+class Solution3 {
+public:
+  vector<string> removeComments(vector<string>& source) {
+    vector<string> ans;
+
+    bool is_block = false;
+    string code;
+    for (auto& line : source) {
+      int i = 0;
+      while (i < line.size()) {
+        if (!is_block && line[i] == '/' && i+1 < line.size() && line[i+1] == '/') { // line comment
+          break;
+        } else if (!is_block && line[i] == '/' && i+1 < line.size() && line[i+1] == '*') { // start of block comment
+          is_block = true;
+          ++i;
+        } else if (is_block && line[i] == '*' && i+1 < line.size() && line[i+1] == '/') { // end of block comment
+          is_block = false;
+          ++i;
+        } else if (!is_block) { // code
+          code.push_back(line[i]);
+        }
+        ++i;
+      }
+
+      if (!is_block && !code.empty()) {
+        ans.push_back(code);
+        code.clear();
+      }
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution2 sol;
+  Solution3 sol;
   // vector<string> source {"/*Test program */", "int main()", "{ ", "  // variable declaration ", "int a, b, c;", "/* This is a test", "   multiline  ", "   comment for ", "   testing */", "a = b + c;", "}"};
   // vector<string> source {"a/* block comment */b"};
   // vector<string> source {"a/*comment", "line", "more_comment*/b"};
   // vector<string> source {"struct Node{", "    /*/ declare members;/**/", "    int size;", "    /**/int val;", "};"};
-  // vector<string> source {"void func(int k) {", "// this function does nothing /*", "   k = k*2/4;", "   k = k/2;*/", "}"};
-  vector<string> source {"/*/bcbc//*ebdb/*/bab/*/a/*//*/d/*///*de/*///*d*//dc*///*/cd//*ccd//*a//*caacad"};
+  vector<string> source {"void func(int k) {", "// this function does nothing /*", "   k = k*2/4;", "   k = k/2;*/", "}"};
+  // vector<string> source {"/*/bcbc//*ebdb/*/bab/*/a/*//*/d/*///*de/*///*d*//dc*///*/cd//*ccd//*a//*caacad"}; // expected: bab
 
   auto ans = sol.removeComments(source);
   for (auto s : ans) {
