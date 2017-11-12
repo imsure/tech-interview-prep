@@ -70,10 +70,14 @@ struct Vertex {
   string name;
   string email;
   bool firstDegree;
+  // unordered_set<Vertex*, VertexHash> neighbors; // 2nd degree vertexes
   unordered_set<Vertex*> neighbors; // 2nd degree vertexes
   Vertex* parent; // only for 2nd degree vertex
 
   Vertex(string n, string e, bool f) : name(n), email(e), firstDegree(f) {}
+  Vertex(string e, bool f, Vertex* p) : email(e), firstDegree(f) {
+    parent = p;
+  }
 
   bool operator==(Vertex& other) {
     return email == other.email;
@@ -112,8 +116,9 @@ private:
 
 public:
   vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    vector<vector<string>> ans;
     unordered_set<Vertex*, VertexHash> graph; // a set of 1st degree vertexes
-    unordered_set<string> zeroEmailAcc;
+    unordered_set<string> zeroEmailAcc; // accounts with no emails
     for (auto& a : accounts) {
       auto res = searchGraph(graph, a);
       if (res.empty()) { // add a new 1st degree vertex along with all its 2nd degree neighbors
@@ -121,23 +126,34 @@ public:
         else {
           Vertex* v_1st = new Vertex(a[0], a[1], true);
           for (int i = 2; i < a.size(); ++i) {
-            Vertex* v_2nd = new Vertex("", a[1], false);
+            Vertex* v_2nd = new Vertex(a[i], false, v_1st);
             v_1st->neighbors.insert(v_2nd);
           }
           graph.insert(v_1st);
         }
       }
     }
+
+    for (Vertex* v_1st : graph) {
+      cout << v_1st->name << ", " << v_1st->email << ", ";
+      for (Vertex* v_2nd : v_1st->neighbors) cout << v_2nd->email << ", ";
+      cout << endl;
+    }
+
+    return ans;
   }
 };
 
 
 int main()
 {
-  Solution sol;
+  Solution2 sol;
+  // vector<vector<string>> accounts {{"John","johnsmith@mail.com","john_newyork@mail.com"},
+  //     {"John","johnsmith@mail.com","john00@mail.com"}, {"Mary","mary@mail.com"},
+  //                                                        {"John","johnnybravo@mail.com"}};
   vector<vector<string>> accounts {{"John","johnsmith@mail.com","john_newyork@mail.com"},
-      {"John","johnsmith@mail.com","john00@mail.com"}, {"Mary","mary@mail.com"},
-                                                         {"John","johnnybravo@mail.com"}};
+      {"Mary","mary@mail.com"}, {"John","johnnybravo@mail.com"}};
+
   auto ans = sol.accountsMerge(accounts);
   for (auto a : ans) {
     for (string s : a) {
