@@ -75,9 +75,55 @@ public:
 };
 
 
+class Solution4 {
+private:
+  int findSame(vector<int>& same_table, int start_id) {
+    while (same_table[start_id] >= 0) start_id = same_table[start_id];
+    return start_id;
+  }
+
+public:
+  vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    vector<vector<string>> ans;
+    int n = accounts.size();
+    unordered_map<string, int> email2id; // maps email to account id
+    vector<int> same_table (n, -1); // smme_table[i] = j means that account i and j is the same account
+
+    // fill the same table
+    for (int i = 0; i < n; ++i) {
+      for (int j = 1; j < accounts[i].size(); ++j) {
+        string& email = accounts[i][j];
+        if (!email2id.count(email)) email2id[email] = i;
+        else { // look up which account also contains this email
+          int k = findSame(same_table, email2id[email]);
+          if (k != i) same_table[k] = i; // note: k should be less than i
+        }
+      }
+    }
+
+    // construct answer
+    for (int i = 0; i < n; ++i) {
+      if (same_table[i] < 0) {
+        sort(accounts[i].begin() + 1, accounts[i].end());
+        auto it = std::unique(accounts[i].begin(), accounts[i].end());
+        accounts[i].resize(std::distance(accounts[i].begin(), it));
+        ans.push_back(accounts[i]);
+      } else {
+        int k = findSame(same_table, i);
+        for (int j = 1; j < accounts[i].size(); ++j) {
+          accounts[k].push_back(accounts[i][j]);
+        }
+      }
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution3 sol;
+  Solution4 sol;
   vector<vector<string>> accounts {{"John","johnsmith@mail.com","john_newyork@mail.com"},
       {"John","johnsmith@mail.com","john00@mail.com"}, {"Mary","mary@mail.com"},
                                                           {"John","johnnybravo@mail.com"}};
