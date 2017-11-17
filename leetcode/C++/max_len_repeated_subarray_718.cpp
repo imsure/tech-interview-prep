@@ -1,4 +1,4 @@
-#include "../common.hpp"
+#include "common.hpp"
 
 // DP approach: got an memory limit exceeded error...
 
