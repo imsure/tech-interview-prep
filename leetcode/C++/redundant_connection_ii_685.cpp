@@ -1,5 +1,13 @@
 #include "common.hpp"
 
+// Step 1: find out if there exists a node having two parents, call it 'target'.
+// Step 2: if 'target' exists and one of its 'parent' forms a cycle with 'target', e.g.,
+//         in graph [4,2],[1,5],[5,2],[5,3],[2,4], 4 <---> 2, then return [4,2]
+// Step 3: if the step 2 is not true, then treat the graph as an undirected graph
+//         and uncover the cycle in the graph (there must exist a cycle for the graph to be invalid).
+//   - if 'target' exists, then return the last edge in the graph where child is 'target' and parent is in the uncovered cycle
+//   - if 'target' does not exist, then the problem is the same as problem 684.
+
 class Solution {
 private:
   void uncoverCycle(unordered_map<int, unordered_set<int>>& graph) {
