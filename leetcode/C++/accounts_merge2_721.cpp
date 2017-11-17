@@ -121,9 +121,94 @@ public:
 };
 
 
+// Union Find
+
+class UnionFind {
+public:
+  UnionFind(int N) {
+    for (int i = 0; i < N; ++i) {
+      parent.push_back(i);
+      rank.push_back(0);
+    }
+  }
+
+  int find(int i) { // path compression
+    if (parent[i] != i) parent[i] = find(parent[i]);
+    return parent[i];
+  }
+
+  bool Union(int x, int y) { // union with rank
+    int rootx = find(x);
+    int rooty = find(y);
+    if (rootx != rooty) {
+      if (rank[rootx] > rank[rooty]) parent[rooty] = rootx;
+      else if (rank[rootx] < rank[rooty]) parent[rootx] = rooty;
+      else {
+        parent[rooty] = rootx; rank[rootx] += 1;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  void getSets(unordered_map<int, vector<int>>& sets) {
+    for (int i = 1; i < parent.size(); ++i) {
+      int root = find(i);
+      sets[root].push_back(i);
+    }
+  }
+
+  void print() {
+    for (int i = 1; i < parent.size(); ++i) cout << i << ':' << parent[i] << endl;
+    cout << endl;
+  }
+
+private:
+  vector<int> parent;
+  vector<int> rank;
+};
+
+class Solution5 {
+public:
+  vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    vector<vector<string>> ans;
+    int n = accounts.size();
+    UnionFind uf (n + 1);
+    unordered_map<string, int> email2id;
+    unordered_map<int, string> id2name;
+
+    for (int i = 0; i < accounts.size(); ++i) {
+      int id = i + 1;
+      id2name[id] = accounts[i][0];
+      for (int j = 1; j < accounts[i].size(); ++j) {
+        string& email = accounts[i][j];
+        if (email2id.count(email)) uf.Union(id, email2id[email]); // union two accounts if they share a same email
+        else email2id[email] = id;
+      }
+    }
+
+    // uf.print();
+    unordered_map<int, vector<int>> sets;
+    uf.getSets(sets);
+    for (auto& s : sets) {
+      vector<string> tmp;
+      tmp.push_back(id2name[s.first]);
+      set<string> tmpset;
+      for (int i : s.second) {
+        for (int j = 1; j < accounts[i-1].size(); ++j) tmpset.insert(accounts[i-1][j]);
+      }
+      for (auto& email : tmpset) tmp.push_back(email);
+      ans.push_back(tmp);
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution4 sol;
+  Solution5 sol;
   vector<vector<string>> accounts {{"John","johnsmith@mail.com","john_newyork@mail.com"},
       {"John","johnsmith@mail.com","john00@mail.com"}, {"Mary","mary@mail.com"},
                                                           {"John","johnnybravo@mail.com"}};
