@@ -147,7 +147,7 @@ public:
 };
 
 
-// Union-Find without rank
+// Union-Find without path compression and rank
 
 class UnionFind {
 public:
@@ -197,10 +197,68 @@ public:
 };
 
 
+// Union-Find with path compression and rank
+
+class UnionFind2 {
+public:
+  UnionFind2(int N) {
+    for (int i = 0; i < N; ++i) {
+      parent.push_back(i);
+      rank.push_back(0);
+    }
+  }
+
+  int find(int i) { // path compression
+    if (parent[i] != i) parent[i] = find(parent[i]);
+    return parent[i];
+  }
+
+  bool Union(int x, int y) { // union with rank
+    int rootx = find(x);
+    int rooty = find(y);
+    if (rootx != rooty) {
+      if (rank[rootx] > rank[rooty]) parent[rooty] = rootx;
+      else if (rank[rootx] < rank[rooty]) parent[rootx] = rooty;
+      else {
+        parent[rooty] = rootx; rank[rootx] += 1;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  void print() {
+    for (int i = 1; i < parent.size(); ++i) cout << i << ':' << parent[i] << endl;
+    cout << endl;
+  }
+
+private:
+  vector<int> parent;
+  vector<int> rank;
+};
+
+class Solution4 {
+public:
+  vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+    int n = edges.size();
+    UnionFind2 uf (n+1);
+
+    for (auto edge : edges) {
+      // if two nodes already belong to the same set, that means they are
+      // already connected, then this edge would be the redundant connection.
+      if (uf.Union(edge[0], edge[1]) == false) return edge;
+      // uf.print();
+    }
+
+    return {};
+  }
+};
+
+
 int main()
 {
-  Solution3 sol;
-  vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
+  Solution4 sol;
+   vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
   // vector<vector<int>> edges {{1,2}, {2,3}, {3,4}, {1,4}, {1,5}}; // [1,4]
   // vector<vector<int>> edges {{1,4}, {3,4}, {1,3}, {1,2}, {4,5}}; // [1,3]
   // vector<vector<int>> edges {{2,7}, {7,8}, {3,6}, {2,5}, {6,8}, {4,8}, {2,8}, {1,8}, {7,10}, {3,9}}; // [2,8]
