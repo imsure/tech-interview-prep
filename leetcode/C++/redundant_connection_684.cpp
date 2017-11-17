@@ -258,7 +258,7 @@ public:
 int main()
 {
   Solution4 sol;
-   vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
+  vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
   // vector<vector<int>> edges {{1,2}, {2,3}, {3,4}, {1,4}, {1,5}}; // [1,4]
   // vector<vector<int>> edges {{1,4}, {3,4}, {1,3}, {1,2}, {4,5}}; // [1,3]
   // vector<vector<int>> edges {{2,7}, {7,8}, {3,6}, {2,5}, {6,8}, {4,8}, {2,8}, {1,8}, {7,10}, {3,9}}; // [2,8]
