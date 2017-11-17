@@ -79,12 +79,58 @@ public:
 };
 
 
+// Union Find approach.
+// credit: https://discuss.leetcode.com/topic/105108/c-java-union-find-with-explanation-o-n
+
+class Solution2 {
+private:
+  int root(vector<int>& parent, int u) {
+    if (parent[u] != u) parent[u] = root(parent, parent[u]);
+    return parent[u];
+  }
+
+public:
+  vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+    int n = edges.size();
+    vector<int> parent (n+1, 0);
+    vector<int> candA, candB; // two possible edges to be removed if there is a node with 2 parents
+
+    // see if there is a node with 2 parents?
+    for (auto& edge : edges) {
+      if (parent[edge[1]] == 0) parent[edge[1]] = edge[0];
+      else { // exists
+        candA = {parent[edge[1]], edge[1]};
+        candB = edge;
+        edge[1] = 0; // mark this edge as invalid
+      }
+    }
+
+    // after the above step we are guaranteed to have a graph where each node has only 1 parent
+
+    // Union Find
+    for (int i = 1; i < n+1; ++i) parent[i] = i;
+    for (auto& edge : edges) {
+      if (edge[1] == 0) continue; // skip the marked edge
+      int u = edge[0], v = edge[1], parent_of_u = root(parent, u);
+      if (parent_of_u == v) { // cycle detected
+        if (candA.empty()) return edge; // there is no node with 2 parents, return the edge that forms the cycle
+        return candA; // candA is the edge that invalidate the tree
+      } else {
+        parent[v] = parent_of_u;
+      }
+    }
+
+    // if after Union Find, the graph is still valid, then candB is the edge that invalidate the tree
+    return candB;
+  }
+};
+
 int main()
 {
-  Solution sol;
-   vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
+  Solution2 sol;
+  // vector<vector<int>> edges {{1,2}, {1,3}, {2,3}}; // [2,3]
   // vector<vector<int>> edges {{2,1}, {3,1}, {4,2}, {1,4}}; // [2,1]
-  // vector<vector<int>> edges {{4,2}, {1,5}, {5,2}, {5,3}, {2,4}}; // [4,2]
+  vector<vector<int>> edges {{4,2}, {1,5}, {5,2}, {5,3}, {2,4}}; // [4,2]
   auto res = sol.findRedundantDirectedConnection(edges);
   for (int n : res) cout << n << ' ';
   cout << endl;
