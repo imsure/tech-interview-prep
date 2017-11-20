@@ -4,3 +4,4 @@ have been solved and added back to the `leetcode/C++/`.**
 Weekly Contest | Done?
 -------------- | -----
 57             | Yes
+56             | Yes
