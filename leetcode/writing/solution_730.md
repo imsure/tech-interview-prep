@@ -20,7 +20,10 @@ b, c, d`, thus `0 <= x < 4`. The DP formula goes as follows:
   the sub-window `S[i+1][j-1]` plus the `2` palindromes contributed by
   the first and last characters.
   
-  
+Let `n` be the length of the input string `S`, The final answer would
+be `dp[0][0][n-1] + dp[1][0][n-1] + dp[2][0][n-1] + dp[3][0][n-1]`
+mod `1000000007`.
+
 **C++**
 
 ```C++
@@ -68,7 +71,7 @@ public:
 };
 ```
 
-**Examples Walkthrough**
+**Example Walkthrough**
 
 Indeed this is a hard problem to solve and thoroughly understanding
 its solution is also challenging. Maybe the best way to understand the
@@ -97,6 +100,6 @@ problems, we can build up this kind of intuition.
 
 *Credit*: the above solution is inspired by
 [this post](https://discuss.leetcode.com/topic/111241/c-o-n-2-time-o-n-memory-with-explanation)
-written by @lastico. His solution is space optimized. However, I found
+written by @elastico. His solution is space optimized. However, I found
 that my approach is relatively easy to understand for people who found
 this problem hard to approach.
