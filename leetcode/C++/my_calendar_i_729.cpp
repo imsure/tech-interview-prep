@@ -78,6 +78,42 @@ private:
 };
 
 
+// same as above, but with simplified logic
+
+class MyCalendar3 {
+public:
+  MyCalendar3() {
+
+  }
+
+  bool book(int start, int end) {
+    if (ins.empty()) {
+      ins.push_back({start, end});
+      return true;
+    }
+
+    // find the insertion position if not double-booking
+    auto it = ins.begin();
+    while (it != ins.end()) {
+      auto in = *it;
+      if (end <= in.first) { // on the left of this interval, valid
+        break;
+      } else if (start >= in.second) { // on the right of this interval, advance
+        ++it;
+      } else { // invalid
+        return false;
+      }
+    }
+
+    ins.insert(it, {start, end});
+    return true;
+  }
+
+private:
+  vector<pair<int, int>> ins;
+};
+
+
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar obj = new MyCalendar();
@@ -85,7 +121,7 @@ private:
  */
 int main()
 {
-  MyCalendar2 obj;
+  MyCalendar3 obj;
   cout << obj.book(10, 20) << endl;
   cout << obj.book(15, 25) << endl;
   cout << obj.book(20, 30) << endl;
