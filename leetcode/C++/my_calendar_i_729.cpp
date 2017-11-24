@@ -1,4 +1,4 @@
-#include "../common.hpp"
+#include "common.hpp"
 
 class MyCalendar {
 public:
@@ -38,6 +38,46 @@ private:
   vector<int> ends;
 };
 
+
+// sort the intervals with insertion sort
+
+class MyCalendar2 {
+public:
+  MyCalendar2() {
+
+  }
+
+  bool book(int start, int end) {
+    if (ins.empty()) {
+      ins.push_back({start, end});
+      return true;
+    }
+
+    // find the insertion position if not double-booking
+    auto it = ins.begin();
+    while (it != ins.end()) {
+      auto in = *it;
+      if ((end > in.first && end <= in.second) || (start >= in.first && start < in.second)
+          || (start <= in.first && end >= in.second)) { // overlaps with this interval
+        return false;
+      }
+
+      if (end <= in.first) { // on the left of this interval, valid
+        break;
+      }
+
+      ++it;
+    }
+
+    ins.insert(it, {start, end});
+    return true;
+  }
+
+private:
+  vector<pair<int, int>> ins;
+};
+
+
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar obj = new MyCalendar();
@@ -45,7 +85,7 @@ private:
  */
 int main()
 {
-  MyCalendar obj;
+  MyCalendar2 obj;
   cout << obj.book(10, 20) << endl;
   cout << obj.book(15, 25) << endl;
   cout << obj.book(20, 30) << endl;
