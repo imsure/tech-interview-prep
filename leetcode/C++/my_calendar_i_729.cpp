@@ -114,6 +114,28 @@ private:
 };
 
 
+// use std::map
+
+class MyCalendar4 {
+public:
+  MyCalendar4() {
+
+  }
+
+  bool book(int start, int end) {
+    auto up = start2end.upper_bound(start); // first key > start
+    if (up != start2end.end() && up->first < end) return false; // an existing book (on the right) overlaps with current one
+    if (up != start2end.begin() && (--up)->second > start) return false; // an existing book (on the left) overlaps with current one
+
+    start2end[start] = end;
+    return true;
+  }
+
+private:
+  map<int, int> start2end;
+};
+
+
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar obj = new MyCalendar();
@@ -121,7 +143,7 @@ private:
  */
 int main()
 {
-  MyCalendar3 obj;
+  MyCalendar4 obj;
   cout << obj.book(10, 20) << endl;
   cout << obj.book(15, 25) << endl;
   cout << obj.book(20, 30) << endl;
