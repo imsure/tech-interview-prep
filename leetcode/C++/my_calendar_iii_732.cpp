@@ -195,6 +195,31 @@ private:
 };
 
 
+class MyCalendarThree4 {
+public:
+  MyCalendarThree4() {
+    maxBooking = 0;
+  }
+
+  int book(int start, int end) {
+    timeline[start]++;
+    timeline[end]--;
+
+    int booked = 0;
+    for (auto kv : timeline) {
+      booked += kv.second;
+      maxBooking = max(maxBooking, booked);
+    }
+
+    return maxBooking;
+  }
+
+private:
+  map<int, int> timeline;
+  int maxBooking;
+};
+
+
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * MyCalendar obj = new MyCalendar();
@@ -202,7 +227,7 @@ private:
  */
 int main()
 {
-  MyCalendarThree3 obj;
+  MyCalendarThree4 obj;
   cout << obj.book(10, 20) << endl; // 1
   cout << obj.book(50, 60) << endl; // 1
   cout << obj.book(10, 40) << endl; // 2
