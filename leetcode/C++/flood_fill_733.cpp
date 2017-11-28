@@ -31,15 +31,41 @@ public:
   }
 };
 
+
+// DFS
+
+class Solution2 {
+private:
+  void flood(vector<vector<int>>& image, int sr, int sc, int origColor, int newColor) {
+    if (image[sr][sc] != origColor) return;
+
+    int nr = image.size();
+    int nc = image[0].size();
+    image[sr][sc] = newColor;
+    if (sr - 1 >= 0) flood(image, sr - 1, sc, origColor, newColor);
+    if (sr + 1 < nr) flood(image, sr + 1, sc, origColor, newColor);
+    if (sc - 1 >= 0) flood(image, sr, sc - 1, origColor, newColor);
+    if (sc + 1 < nc) flood(image, sr, sc + 1, origColor, newColor);
+  }
+
+public:
+  vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+    if (image[sr][sc] == newColor) return image;
+    flood(image, sr, sc, image[sr][sc], newColor);
+    return image;
+  }
+};
+
+
 int main()
 {
-  Solution sol;
-  // vector<vector<int>> image = {{1,1,1}, {1,1,0}, {1,0,1}};
-  // sol.floodFill(image, 1, 1, 2);
+  Solution2 sol;
+  vector<vector<int>> image = {{1,1,1}, {1,1,0}, {1,0,1}};
+  sol.floodFill(image, 1, 1, 2);
   // vector<vector<int>> image = {{0,1,1}, {0,1,1}};
   // sol.floodFill(image, 1, 1, 1);
-  vector<vector<int>> image = {{0,0,0}, {0,1,0}};
-  sol.floodFill(image, 1, 0, 2);
+  // vector<vector<int>> image = {{0,0,0}, {0,1,0}};
+  // sol.floodFill(image, 1, 0, 2);
   for (auto row : image) {
     for (int p : row) cout << p << ' ';
     cout << endl;
