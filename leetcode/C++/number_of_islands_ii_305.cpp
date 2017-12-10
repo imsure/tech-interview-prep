@@ -143,13 +143,49 @@ private:
   vector<int>* nodes;
 };
 
+// Union Find with path compression and rank
+
+class UnionFind2 {
+public:
+  UnionFind2(int N) {
+    nodes = new vector<int>(N, -1);
+    rank = new vector<int>(N, 0);
+  }
+
+  // returns the parent of 'node'
+  int find(int node) {
+    if ((*nodes)[node] != node) (*nodes)[node] = find((*nodes)[node]);
+    return (*nodes)[node];
+  }
+
+  // union 'node1' and 'node2'
+  void Union(int node1, int node2) {
+    int parent1 = find(node1);
+    int parent2 = find(node2);
+    if (rank->at(parent1) > rank->at(parent2)) nodes->at(parent2) = parent1;
+    else if (rank->at(parent2) > rank->at(parent1)) nodes->at(parent1) = parent2;
+    else {
+      nodes->at(parent1) = parent2;
+      rank->at(parent2) += 1;
+    }
+  }
+
+  void setRoot(int node) {
+    nodes->at(node) = node;
+  }
+
+private:
+  vector<int>* nodes;
+  vector<int>* rank;
+};
+
 class Solution3 {
 public:
   vector<int> numIslands2(int m, int n, vector<pair<int, int>>& positions) {
     vector<int> ans;
     int island_count = 0;
     vector<vector<char>> grid (m, vector<char>(n, '0'));
-    UnionFind uf (m * n);
+    UnionFind2 uf (m * n);
     for (auto& pos : positions) {
       int r = pos.first;
       int c = pos.second;
@@ -184,8 +220,8 @@ int main()
 {
   Solution3 sol;
   // vector<pair<int, int>> pos {{0,0}, {0,1}, {1,2}, {2,1}}; // 1,1,2,3
-  // vector<pair<int, int>> pos {{0,1}, {1,0}, {1,2}, {2,1}, {1,1}}; // 1,2,3,4,1
-  vector<pair<int, int>> pos {{0,1}, {1,2}, {2,1}, {1,0}, {0,2}, {0,0}, {1,1}}; // 1,2,3,4,3,2,1
+  vector<pair<int, int>> pos {{0,1}, {1,0}, {1,2}, {2,1}, {1,1}}; // 1,2,3,4,1
+  // vector<pair<int, int>> pos {{0,1}, {1,2}, {2,1}, {1,0}, {0,2}, {0,0}, {1,1}}; // 1,2,3,4,3,2,1
   auto res = sol.numIslands2(3, 3, pos);
   for (int r : res) cout << r << endl;
 }
