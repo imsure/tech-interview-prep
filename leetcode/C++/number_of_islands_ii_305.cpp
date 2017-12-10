@@ -114,11 +114,78 @@ public:
 };
 
 
+// Union Find
+
+class UnionFind {
+public:
+  UnionFind(int N) {
+    nodes = new vector<int>(N, -1);
+  }
+
+  // returns the parent of 'node'
+  int find(int node) {
+    if ((*nodes)[node] != node) return find((*nodes)[node]);
+    else return node;
+  }
+
+  // union 'node1' and 'node2'
+  void Union(int node1, int node2) {
+    int parent1 = find(node1);
+    int parent2 = find(node2);
+    nodes->at(parent2) = parent1;
+  }
+
+  void setRoot(int node) {
+    nodes->at(node) = node;
+  }
+
+private:
+  vector<int>* nodes;
+};
+
+class Solution3 {
+public:
+  vector<int> numIslands2(int m, int n, vector<pair<int, int>>& positions) {
+    vector<int> ans;
+    int island_count = 0;
+    vector<vector<char>> grid (m, vector<char>(n, '0'));
+    UnionFind uf (m * n);
+    for (auto& pos : positions) {
+      int r = pos.first;
+      int c = pos.second;
+      grid[r][c] = '1';
+      // check pos's neighbors to see if they are in the existing islands or not
+      unordered_map<int, pair<int, int>> r2p;
+      if (r - 1 >= 0 && grid[r-1][c] == '1') r2p[uf.find((r-1) * n + c)] = {r-1, c};
+      if (r + 1 < m && grid[r+1][c] == '1') r2p[uf.find((r+1) * n + c)] = {r+1, c};
+      if (c - 1 >= 0 && grid[r][c-1] == '1') r2p[uf.find(r * n + (c-1))] = {r, c-1};
+      if (c + 1 < n && grid[r][c+1] == '1') r2p[uf.find(r * n + (c+1))] = {r, c+1};
+
+      int root = r * n + c;
+      uf.setRoot(root);
+      if (!r2p.empty()) {
+        for (auto& kv : r2p) {
+          auto p = kv.second;
+          uf.Union(root, p.first * n + p.second);
+        }
+        island_count -= (r2p.size() - 1);
+      } else {
+        ++island_count;
+      }
+      ans.push_back(island_count);
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution2 sol;
-  // vector<pair<int, int>> pos {{0,0}, {0,1}, {1,2}, {2,1}};
-  vector<pair<int, int>> pos {{0,1}, {1,0}, {1,2}, {2,1}, {1,1}};
+  Solution3 sol;
+  // vector<pair<int, int>> pos {{0,0}, {0,1}, {1,2}, {2,1}}; // 1,1,2,3
+  // vector<pair<int, int>> pos {{0,1}, {1,0}, {1,2}, {2,1}, {1,1}}; // 1,2,3,4,1
+  vector<pair<int, int>> pos {{0,1}, {1,2}, {2,1}, {1,0}, {0,2}, {0,0}, {1,1}}; // 1,2,3,4,3,2,1
   auto res = sol.numIslands2(3, 3, pos);
   for (int r : res) cout << r << endl;
 }
