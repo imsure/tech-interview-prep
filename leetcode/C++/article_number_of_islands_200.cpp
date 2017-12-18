@@ -99,7 +99,7 @@ public:
 };
 
 
-// Union-Find without path compression and rank
+// Union-Find with path compression and rank
 // For details, you can refer to this article: https://leetcode.com/articles/redundant-connection/
 
 class UnionFind {
