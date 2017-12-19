@@ -60,10 +60,45 @@ public:
   }
 };
 
+
+// DFS:
+// Traverse the matrix (graph), for each person (if not visited), DFS all his friends and mark the
+// corresponding cells as 0 to indicate as visited, after that, increment count by 1.
+// Skip people that have already been visted (already in some circle that has been identified)
+
+class Solution2 {
+private:
+  void dfs(vector<vector<int>>& M, int i, int n) {
+    M[i][i] = 0;
+    for (int j = 0; j < n; ++j) {
+      if (i != j && M[i][j]) {
+        M[i][j] = 0;
+        M[j][i] = 0;
+        dfs(M, j, n);
+      }
+    }
+  }
+
+public:
+  int findCircleNum(vector<vector<int>>& M) {
+    int n = M.size();
+    int count = 0;
+    for (int i = 0; i < n; ++i) {
+      if (M[i][i]) {
+        ++count;
+        dfs(M, i, n);
+      }
+    }
+    return count;
+  }
+};
+
+
 int main()
 {
-  Solution sol;
-  // vector<vector<int>> M {{1,1,0}, {1,1,0}, {0,0,1}};
-  vector<vector<int>> M {{1,1,0}, {1,1,1}, {0,1,1}};
+  Solution2 sol;
+  // vector<vector<int>> M {{1,1,0}, {1,1,0}, {0,0,1}}; // 2
+  // vector<vector<int>> M {{1,1,0}, {1,1,1}, {0,1,1}}; // 1
+  vector<vector<int>> M {{1,0,0,1}, {0,1,1,0}, {0,1,1,1}, {1,0,1,1}}; // 1
   cout << sol.findCircleNum(M) << endl;
 }
