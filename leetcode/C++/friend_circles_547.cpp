@@ -94,11 +94,41 @@ public:
 };
 
 
+// BFS:
+// For each person, if not visited, BFS all his direct friends, mark them
+// as visited and increment counter by 1.
+
+class Solution3 {
+public:
+  int findCircleNum(vector<vector<int>>& M) {
+    int n = M.size();
+    int count = 0;
+    for (int i = 0; i < n; ++i) {
+      if (M[i][i]) {
+        ++count;
+        M[i][i] = 0;
+        queue<int> friends;
+        friends.push(i);
+        while (!friends.empty()) {
+          int j = friends.front();
+          friends.pop();
+          M[j][j] = 0; // mark as visited
+          for (int k = 0; k < n; ++k) {
+            if (k != j && M[k][k] && M[j][k]) friends.push(k);
+          }
+        }
+      }
+    }
+    return count;
+  }
+};
+
+
 int main()
 {
-  Solution2 sol;
-  // vector<vector<int>> M {{1,1,0}, {1,1,0}, {0,0,1}}; // 2
+  Solution3 sol;
+  vector<vector<int>> M {{1,1,0}, {1,1,0}, {0,0,1}}; // 2
   // vector<vector<int>> M {{1,1,0}, {1,1,1}, {0,1,1}}; // 1
-  vector<vector<int>> M {{1,0,0,1}, {0,1,1,0}, {0,1,1,1}, {1,0,1,1}}; // 1
+  // vector<vector<int>> M {{1,0,0,1}, {0,1,1,0}, {0,1,1,1}, {1,0,1,1}}; // 1
   cout << sol.findCircleNum(M) << endl;
 }
