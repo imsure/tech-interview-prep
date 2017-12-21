@@ -65,6 +65,9 @@ public:
 
 // Passed with Runtime: 1409 ms
 
+// time: O(L*L), for each position, we have to traverse the entire HashMap to update island id
+// space: O(L) for the HashMap
+
 class Solution2 {
 public:
   vector<int> numIslands2(int m, int n, vector<pair<int, int>>& positions) {
@@ -159,6 +162,9 @@ private:
 // Union Find:
 // The idea is similiar to solution2, but we use Union Find to incrementally
 // merge (union) adjacent lands instead of doing it naively in the above approach.
+
+// time: O(m*n + L), it takes O(m*n) to initialize UF, and O(L) to process positions.
+// space: O(m*n) for UF
 
 class Solution3 {
 public:
