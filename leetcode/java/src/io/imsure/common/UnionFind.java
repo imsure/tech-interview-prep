@@ -22,6 +22,25 @@ public class UnionFind {
         }
     }
 
+    public UnionFind(int N) { // for problem 305 and others
+        count = 0;
+        parent = new int[N];
+        rank = new int[N];
+        for (int i = 0; i < N; ++i) {
+            parent[i] = -1;
+            rank[i] = 0;
+        }
+    }
+
+    public boolean isValid(int i) { // for problem 305
+        return parent[i] >= 0;
+    }
+
+    public void setParent(int i) {
+        parent[i] = i;
+        ++count;
+    }
+
     public int find(int i) { // path compression
         if (parent[i] != i) parent[i] = find(parent[i]);
         return parent[i];
