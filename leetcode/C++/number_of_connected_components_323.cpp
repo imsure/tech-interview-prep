@@ -43,8 +43,8 @@ private:
 
 // Union Find:
 
-// time:
-// space:
+// time: O(m) where m is the # of edges
+// space: O(n)
 
 class Solution {
 public:
