@@ -67,9 +67,30 @@ public:
 };
 
 
+// more concise code
+
+class Solution3 {
+public:
+  int countBinarySubstrings(string s) {
+    int prev = 0, cur = 1, count = 0;
+    for (int i = 1; i < s.size(); ++i) {
+      if (s[i] == s[i-1]) {
+        cur++;
+      } else {
+        prev = cur;
+        cur = 1;
+      }
+      if (prev >= cur) ++count;
+    }
+
+    return count;
+  }
+};
+
+
 int main()
 {
-  Solution2 sol;
+  Solution3 sol;
   cout << sol.countBinarySubstrings("00110011") << endl; // 6
   cout << sol.countBinarySubstrings("10101") << endl; // 6
 }
