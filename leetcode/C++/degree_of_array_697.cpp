@@ -39,6 +39,8 @@ public:
 };
 
 
+// one-pass
+
 class Solution2 {
 public:
   int findShortestSubArray(vector<int>& nums) {
