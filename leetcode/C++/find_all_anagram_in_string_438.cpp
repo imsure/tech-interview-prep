@@ -120,11 +120,37 @@ public:
 };
 
 
+class Solution4 {
+public:
+  vector<int> findAnagrams(string s, string p) {
+    int s_sz = s.size(), p_sz = p.size();
+    if (s_sz < p_sz) return {};
+
+    vector<int> ans;
+    vector<int> s_map (26, 0), p_map (26, 0);
+    for (int i = 0; i < p_sz; ++i) {
+      s_map[s[i] - 'a']++;
+      p_map[p[i] - 'a']++;
+    }
+
+    if (s_map == p_map) ans.push_back(0);
+
+    for (int i = p_sz; i < s_sz; ++i) {
+      s_map[s[i - p_sz] - 'a']--;
+      s_map[s[i] - 'a']++;
+      if (s_map == p_map) ans.push_back(i - p_sz + 1);
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution3 sol;
-  auto res = sol.findAnagrams("cbaebabacd", "abc"); // [0,6]
-  // auto res = sol.findAnagrams("abab", "ab"); // [0,1,2]
+  Solution4 sol;
+  // auto res = sol.findAnagrams("cbaebabacd", "abc"); // [0,6]
+  auto res = sol.findAnagrams("abab", "ab"); // [0,1,2]
   for (int n : res) cout << n << ' ';
   cout << '\n';
 }
