@@ -1,0 +1,3 @@
+cd src/
+javac io/imsure/solutions/_<problem ID>.java 
+java io.imsure.solutions._<problem ID>
