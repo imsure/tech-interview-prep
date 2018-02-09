@@ -1,5 +1,14 @@
 #include "common.hpp"
 
+// set + sliding windows
+//
+// Linear scan the array, use a set to keep track of a sorted windows of k elements,
+// when a new element x comes, find the first element in the set that is >= (x-t),
+// if this element y does not exist, then move on, otherwise calculate the absolute
+// difference between x and y, if difference <= t, return true, otherwise move on.
+
+// time: O(NlogN)
+// space: O(k)
 
 class Solution {
 public:
@@ -11,13 +20,10 @@ public:
     for (int i = 0; i < nums.size(); ++i) {
       if (num_set.size() > k) num_set.erase(nums[i - k - 1]);
 
+      // find the first element in the set that is >= (nums[i] - t)
       auto it_lo = num_set.lower_bound((long)(nums[i]) - t);
-      // auto it_up = num_set.upper_bound(nums[i] + t);
 
-      // cout << (long)nums[i] - t << endl;
-      // if (it_lo == num_set.end()) cout << "end\n";
       if (it_lo != num_set.end() && abs(*it_lo - (long)nums[i]) <= t) return true;
-      // if (std::distance(it_lo, it_up) >= 1) return true;
 
       num_set.insert(nums[i]);
     }
