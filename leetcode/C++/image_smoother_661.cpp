@@ -70,10 +70,41 @@ public:
 };
 
 
+// More concise code
+
+class Solution2 {
+public:
+  vector<vector<int>> imageSmoother(vector<vector<int>>& M) {
+    int h = M.size();
+    int w = M[0].size();
+
+    vector<vector<int>> ret (h, vector<int> (w));
+
+    for (int r = 0; r < h; ++r) {
+      for (int c = 0; c < w; ++c) {
+        int count = 0;
+        int total = 0;
+        for (int i = r - 1; i <= r + 1; ++i) {
+          for (int j = c - 1; j <= c + 1; ++j) {
+            if (i >= 0 && i < h && j >=0 && j < w) {
+              count++;
+              total += M[i][j];
+              ret[r][c] = total / count;
+            }
+          }
+        }
+      }
+    }
+
+    return ret;
+  }
+};
+
+
 int main()
 {
   vector<vector<int>> matrix = {{1,1,1}, {1,0,1}, {1,1,1}};
-  Solution sol;
+  Solution2 sol;
   auto M = sol.imageSmoother(matrix);
   for (auto& row : M) {
     for (int v : row) cout << v << ' ';
