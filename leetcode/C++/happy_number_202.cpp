@@ -1,8 +1,6 @@
 #include "common.hpp"
 
 
-// Segmentation fault
-
 class Solution {
 private:
   bool _isHappy(int n, unordered_set<int>& visited) {
@@ -54,7 +52,7 @@ public:
 
 int main()
 {
-  Solution2 sol;
+  Solution sol;
   cout << std::boolalpha << sol.isHappy(19) << endl;
   cout << std::boolalpha << sol.isHappy(20) << endl;
 }
