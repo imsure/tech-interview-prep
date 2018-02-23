@@ -37,10 +37,26 @@ public:
 };
 
 
+class Solution2 {
+public:
+  vector<int> getRow(int rowIndex) {
+    vector<int> ans (rowIndex + 1, 0);
+    ans[0] = 1;  // first row
+    for (int row = 1; row <= rowIndex; ++row) {
+      for (int i = row; i >= 1; --i) {
+        ans[i] += ans[i - 1];
+      }
+    }
+
+    return ans;
+  }
+};
+
+
 int main()
 {
-  Solution sol;
-  auto ret = sol.getRow(30);
+  Solution2 sol;
+  auto ret = sol.getRow(6);
   for (int n : ret) cout << n << ' ';
   cout << '\n';
 }
