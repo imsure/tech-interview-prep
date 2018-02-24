@@ -68,9 +68,62 @@ public:
 };
 
 
+// improved version
+
+class Solution3 {
+public:
+  int pivotIndex(vector<int>& nums) {
+    int len = nums.size();
+    if (!len) return -1;
+
+    int lsum = 0, rsum = 0;
+    vector<int> prefix_sum (len, 0);
+    vector<int> suffix_sum (len, 0);
+
+    for (int i = 0; i < len; ++i) {
+      lsum += nums[i];
+      rsum += nums[len - i - 1];
+      prefix_sum[i] = lsum;
+      suffix_sum[len - i - 1] = rsum;
+    }
+
+    // find the left-most pivot index
+    for (int i = 0; i < len; ++i) {
+      if (prefix_sum[i] == suffix_sum[i]) return i;
+    }
+
+    return -1;
+  }
+};
+
+
+// O(1) space
+
+class Solution4 {
+public:
+  int pivotIndex(vector<int>& nums) {
+    int len = nums.size();
+    if (!len) return -1;
+
+    int sum = 0;
+    int prefix_sum = 0;
+
+    for (int num : nums) sum += num;
+
+    for (int i = 0; i < len; ++i) {
+      int suffix_sum = sum - prefix_sum;
+      prefix_sum += nums[i];
+      if (prefix_sum == suffix_sum) return i;
+    }
+
+    return -1;
+  }
+};
+
+
 int main()
 {
-  Solution2 sol;
+  Solution4 sol;
   // vector<int> nums {1, 7, 3, 6, 5, 6};  // 3
   // vector<int> nums {1, 2, 3};  // -1
   // vector<int> nums {-1, -1, -1, -1, -1, 0};  // 2
