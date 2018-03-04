@@ -39,9 +39,35 @@ public:
   }
 };
 
+
+// Map letters in pattern and words in str to the position index so that
+// the letter and word at the position are mapped to the same index. We incrementally
+// check if previous seen letter and word are mapped to the same value or not. If not,
+// the don't match, return false, otherwise update the index.
+
+class Solution2 {
+public:
+  bool wordPattern(string pattern, string str) {
+    unordered_map<char, int> p2i;
+    unordered_map<string, int> w2i;
+    istringstream ins (str);
+    string word;
+    int j;
+    for (j = 1; ins >> word; ++j) {
+      if (j > pattern.size() || p2i[pattern[j-1]] != w2i[word]) return false;
+      p2i[pattern[j-1]] = w2i[word] = j;
+    }
+
+    if (j <= pattern.size()) return false;
+
+    return true;
+  }
+};
+
+
 int main()
 {
-  Solution sol;
+  Solution2 sol;
   cout << std::boolalpha << sol.wordPattern("abba", "dog cat cat dog") << endl;  // true
   cout << std::boolalpha << sol.wordPattern("abba", "dog cat cat fish") << endl;  // false
   cout << std::boolalpha << sol.wordPattern("aaaa", "dog cat cat fish") << endl;  // false
