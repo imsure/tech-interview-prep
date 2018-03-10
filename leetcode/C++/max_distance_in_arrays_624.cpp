@@ -36,6 +36,31 @@ public:
 };
 
 
+
+// one-pass
+
+class Solution2 {
+public:
+  int maxDistance(vector<vector<int>>& arrays) {
+    int m = arrays.size();
+    int res = numeric_limits<int>::min();
+    int min_val = arrays[0][0];
+    int max_val = arrays[0][arrays[0].size()-1];
+
+    for (int i = 1; i < m; ++i) {
+      auto& arr = arrays[i];
+      int sz = arr.size();
+      res = max(res, abs(arr[sz-1] - min_val));
+      res = max(res, abs(max_val - arr[0]));
+      min_val = min(min_val, arr[0]);
+      max_val = max(max_val, arr[sz-1]);
+    }
+
+    return res;
+  }
+};
+
+
 int main()
 {
   Solution sol;
