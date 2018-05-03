@@ -68,10 +68,35 @@ public:
 };
 
 
+// Line-up all string vertically and align left-most chars on the
+// same column. Then scan each column from left to right. Stop when
+// column have different chars or some cell is empty.
+
+class Solution2 {
+public:
+  string longestCommonPrefix(vector<string>& strs) {
+    int len = strs.size();
+    string prefix = "";
+    if (!len) return prefix;
+
+    for (int col = 0; col < strs[0].size(); ++col) {
+      char c = strs[0][col];
+      for (int row = 1; row < len; ++row) {
+        if (col == strs[row].size()) return prefix;
+        if (c != strs[row][col]) return prefix;
+      }
+      prefix += c;
+    }
+
+    return prefix;
+  }
+};
+
+
 int main()
 {
-  // vector<string> strs {"flower","flow","flight"};
-  vector<string> strs {"dog","racecar","car"};
-  Solution sol;
+  vector<string> strs {"flower","flow","flight"};
+  // vector<string> strs {"dog","racecar","car"};
+  Solution2 sol;
   cout << sol.longestCommonPrefix(strs) << endl;
 }
