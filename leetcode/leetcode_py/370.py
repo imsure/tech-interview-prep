@@ -26,11 +26,13 @@ class Solution:
         each update operation; 2nd pass then use propagate changes to the entire array.
 
         Specifically, given an 'array', for each operation [start, end, inc], let:
-        array[start] += inc
-        array[end + 1] += inc
+        array[start] += inc  (mark that we need to increase the subsequent elements in this amount)
+        array[end + 1] += inc  (mark that we need to decrease the elements starting at this index in this amount)
 
         Then linear scan the array:
         array[i] += array[i-1]
+
+        each range's inc got carried over along this computation so it works!
 
         Time: O(K+N), K = len(updates), N = length
 
