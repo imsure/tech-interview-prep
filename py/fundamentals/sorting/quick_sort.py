@@ -50,7 +50,7 @@ def partition(array, p, lo, hi):
     return i
 
 
-def quick_sort_inplace(array, lo, hi):
+def _quick_sort_inplace(array, lo, hi):
     """
 
     :param array:
@@ -61,8 +61,12 @@ def quick_sort_inplace(array, lo, hi):
 
     pivot_index = randint(lo, hi)
     split_index = partition(array, pivot_index, lo, hi)
-    quick_sort_inplace(array, lo, split_index-1)
-    quick_sort_inplace(array, split_index+1, hi)
+    _quick_sort_inplace(array, lo, split_index-1)
+    _quick_sort_inplace(array, split_index+1, hi)
+
+
+def quick_sort_inplace(array):
+    _quick_sort_inplace(array, 0, len(array)-1)
 
 
 # print(quick_sort([]))
@@ -86,9 +90,9 @@ print(partition(array, 4, 0, len(array) - 1))
 print(array)
 
 array = [5, 8, 3, 9, 1, 0]
-quick_sort_inplace(array, 0, 5)
+quick_sort_inplace(array)
 print(array)
 
 array = [-3, -2, -1, 0, 1, 2, 3]
-quick_sort_inplace(array, 0, 6)
+quick_sort_inplace(array)
 print(array)
