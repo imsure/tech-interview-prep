@@ -62,11 +62,43 @@ def lis2(A):
     return T[0][1]
 
 
-print(lis2([1, 2, 3]))  # 3
-print(lis2([5, 4, 3, 2, 1]))  # 1
-print(lis2([4, 2, 3, 1, 5, 7, 8]))  # 5
-print(lis2([4, 2, 0, 8, 5, 7, 8]))  # 4
-print(lis2([4,4,4,3]))  # 1
-print(lis2([4,4,4,4]))  # 1
-print(lis2([4,10,4,3,8,9]))  # 3
-print(lis2([5,3,8,9]))  # 3
+def lis3(A):
+    """
+    Return the longest increasing subsequence of array A.
+
+    LIS[i]: LIS of A[i...n] that starts with i
+    LIS[i] = 1 + max{LIS[j] | j > i and A[j] > A[i]}
+
+    time: O(n^2)
+    space: O(n)
+
+    :param A:
+    :return:
+    """
+    n = len(A)
+    if n == 0:
+        return 0
+
+    dp = [0] * n
+    dp[n-1] = 1
+    ans = 1
+    for i in range(n-2, -1, -1):
+        m = 0
+        for j in range(i, n):
+            if A[j] > A[i]:
+                m = max(m, dp[j])
+        dp[i] = 1 + m
+        ans = max(ans, dp[i])
+
+    return ans
+
+
+print(lis3([1, 2, 3]))  # 3
+print(lis3([5, 4, 3, 2, 1]))  # 1
+print(lis3([4, 2, 3, 1, 5, 7, 8]))  # 5
+print(lis3([4, 2, 0, 8, 5, 7, 8]))  # 4
+print(lis3([4,4,4,3]))  # 1
+print(lis3([4,4,4,4]))  # 1
+print(lis3([4,10,4,3,8,9]))  # 3
+print(lis3([5,3,8,9]))  # 3
+print(lis3([10, 9, 2, 5, 3, 7, 101, 18]))  # 4
