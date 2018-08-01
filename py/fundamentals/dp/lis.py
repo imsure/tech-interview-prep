@@ -93,12 +93,26 @@ def lis3(A):
     return ans
 
 
-print(lis3([1, 2, 3]))  # 3
-print(lis3([5, 4, 3, 2, 1]))  # 1
-print(lis3([4, 2, 3, 1, 5, 7, 8]))  # 5
-print(lis3([4, 2, 0, 8, 5, 7, 8]))  # 4
-print(lis3([4,4,4,3]))  # 1
-print(lis3([4,4,4,4]))  # 1
-print(lis3([4,10,4,3,8,9]))  # 3
-print(lis3([5,3,8,9]))  # 3
-print(lis3([10, 9, 2, 5, 3, 7, 101, 18]))  # 4
+def lis4(A):
+    import bisect
+    lis = []
+
+    for num in A:
+        insert_pos = bisect.bisect_left(lis, num)
+        if insert_pos == len(lis):
+            lis.append(num)
+        else:
+            lis[insert_pos] = num
+
+    return len(lis)
+
+
+print(lis4([1, 2, 3]))  # 3
+print(lis4([5, 4, 3, 2, 1]))  # 1
+print(lis4([4, 2, 3, 1, 5, 7, 8]))  # 5
+print(lis4([4, 2, 0, 8, 5, 7, 8]))  # 4
+print(lis4([4,4,4,3]))  # 1
+print(lis4([4,4,4,4]))  # 1
+print(lis4([4,10,4,3,8,9]))  # 3
+print(lis4([5,3,8,9]))  # 3
+print(lis4([10, 9, 2, 5, 3, 7, 101, 18]))  # 4

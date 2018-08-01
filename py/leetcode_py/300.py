@@ -1,6 +1,11 @@
 class Solution:
     def lengthOfLIS(self, nums):
         """
+        DP approach
+
+        Time: O(n^2)
+        Space: O(n^2)
+
         TLE
 
         :type nums: List[int]
@@ -29,7 +34,11 @@ class Solution:
 
     def lengthOfLIS2(self, nums):
         """
-        TLE
+        DP approach 2: define dp[i] as LIS of nums[i...n] that starts with nums[i].
+        DP formula: dp[i] = 1 + max{dp[j] | j > i and nums[j] > nums[i]}
+
+        Time: O(n^2)
+        Space: O(n)
 
         :type nums: List[int]
         :rtype: int
@@ -50,3 +59,22 @@ class Solution:
             ans = max(ans, dp[i])
 
         return ans
+
+    def lengthOfLIS3(self, nums):
+        """
+        sorted list + binary search
+
+        :param nums:
+        :return:
+        """
+        import bisect
+        lis = []
+
+        for num in nums:
+            insert_pos = bisect.bisect_left(lis, num)
+            if insert_pos == len(lis):
+                lis.append(num)
+            else:
+                lis[insert_pos] = num
+
+        return len(lis)

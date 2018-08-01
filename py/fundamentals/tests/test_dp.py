@@ -1,7 +1,7 @@
 import pytest
 
 from ..dp.fib import fib, fib2
-from ..dp.lis import lis2, lis3
+from ..dp.lis import lis2, lis3, lis4
 
 
 @pytest.mark.parametrize('n, expected', [
@@ -31,7 +31,7 @@ def test_fib(n, expected):
     ([3, 2, 1], 1),
     ([10, 9, 2, 5, 3, 7, 101, 18], 4),
 ])
-def test_lis(A, expected):
+def test_lis2(A, expected):
     assert lis2(A) == expected
 
 
@@ -45,5 +45,19 @@ def test_lis(A, expected):
     ([3, 2, 1], 1),
     ([10, 9, 2, 5, 3, 7, 101, 18], 4),
 ])
-def test_lis(A, expected):
+def test_lis3(A, expected):
     assert lis3(A) == expected
+
+
+@pytest.mark.parametrize('A, expected', [
+    ([], 0),
+    ([3], 1),
+    ([3, 3], 1),
+    ([3, 5], 2),
+    ([3, 2], 1),
+    ([1, 2, 3], 3),
+    ([3, 2, 1], 1),
+    ([10, 9, 2, 5, 3, 7, 101, 18], 4),
+])
+def test_lis4(A, expected):
+    assert lis4(A) == expected
