@@ -23,6 +23,9 @@ class Solution:
         For each connected component, try to color each node such that no two adjacent
         nodes are of the same color (two-coloring). If anytime there is a violation, return False.
 
+        Time: O(|V| + |E|), need to traverse the entire graph
+        Space: O(|V| + |E|)
+
         :type N: int
         :type dislikes: List[List[int]]
         :rtype: bool
