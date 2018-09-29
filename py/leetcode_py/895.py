@@ -48,6 +48,9 @@ class FreqStack:
 
 
 class FreqStack2:
+    """
+    Priority Queue + HashMap + Stack
+    """
 
     def __init__(self):
         self.counter = itertools.count(0)
@@ -65,20 +68,18 @@ class FreqStack2:
         count = -next(self.counter)
         if x in self.entry_map:
             entry = self.entry_map.pop(x)
-            entry[-1] = -1  # mark as invalid
+            entry[-1] = -1  # mark the dated entry as invalid
             new_entry = [entry[0] - 1, count, x]
         else:
             new_entry = [-1, count, x]
 
-        self.stacks[x].append(count)
+        self.stacks[x].append(count)  # update stack
         self.entry_map[x] = new_entry
-        heapq.heappush(self.pq, new_entry)
-        # print(self.pq)
-        # print(self.stacks)
+        heapq.heappush(self.pq, new_entry)  # insert new entry
 
     def pop(self):
         """
-        O(N)
+        O(1)
 
         :rtype: int
         """
@@ -93,13 +94,44 @@ class FreqStack2:
                 new_entry = [-(freq-1), self.stacks[elem][len(self.stacks[elem])-1], elem]
                 self.entry_map[elem] = new_entry
                 heapq.heappush(self.pq, new_entry)
-            # print(self.stacks)
-            # print(self.pq)
             return elem
 
 
+class FreqStack3:
+    """
+    Improved version:
+    Priority Queue + HashMap
+    """
+
+    def __init__(self):
+        self.counter = itertools.count(0)
+        self.pq = []
+        self.count_map = collections.defaultdict(int)
+
+    def push(self, x):
+        """
+        O(1)
+
+        :type x: int
+        :rtype: void
+        """
+        seq_num = -next(self.counter)
+        self.count_map[x] += 1
+        heapq.heappush(self.pq, [-self.count_map[x], -seq_num, x])
+
+    def pop(self):
+        """
+        O(1)
+
+        :rtype: int
+        """
+        entry = heapq.heappop(self.pq)
+        self.count_map[entry[2]] -= 1
+        return entry[2]
+
+
 # Your FreqStack object will be instantiated and called as such:
-obj = FreqStack2()
+obj = FreqStack3()
 obj.push(5)
 obj.push(7)
 obj.push(5)
