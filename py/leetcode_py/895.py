@@ -115,7 +115,7 @@ class FreqStack3:
         :type x: int
         :rtype: void
         """
-        seq_num = -next(self.counter)
+        seq_num = next(self.counter)
         self.count_map[x] += 1
         heapq.heappush(self.pq, [-self.count_map[x], -seq_num, x])
 
@@ -130,8 +130,46 @@ class FreqStack3:
         return entry[2]
 
 
+class FreqStack4:
+    """
+    Improved version:
+    HashMap + Stack
+    """
+
+    def __init__(self):
+        self.stacks = collections.defaultdict(list)
+        self.counts = collections.Counter()
+        self.max_freq = 0
+
+    def push(self, x):
+        """
+        O(1)
+
+        :type x: int
+        :rtype: void
+        """
+        freq = self.counts[x] + 1
+        self.counts[x] = freq
+        if freq > self.max_freq:
+            self.max_freq = freq
+        self.stacks[freq].append(x)
+
+    def pop(self):
+        """
+        O(1)
+
+        :rtype: int
+        """
+        ans = self.stacks[self.max_freq].pop()
+        self.counts[ans] -= 1
+        if not self.stacks[self.max_freq]:
+            self.max_freq -= 1
+
+        return ans
+
+
 # Your FreqStack object will be instantiated and called as such:
-obj = FreqStack3()
+obj = FreqStack4()
 obj.push(5)
 obj.push(7)
 obj.push(5)
