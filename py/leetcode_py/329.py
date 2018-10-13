@@ -123,7 +123,51 @@ class Solution3:
         return ans
 
 
-sol = Solution3()
+class Solution4:
+    """
+    Simplified code and improved performance.
+    Use array to store computed results.
+    DP + DFS, update LIP of each entry dynamically so that we can reuse the results.
+    """
+
+    # return the longest increasing path starting at matrix[i][j]
+    def dfs(self, matrix, i, j, dp):
+        if dp[i][j]:
+            return dp[i][j]
+
+        max_path_len = 1
+        n = len(matrix)
+        m = len(matrix[0])
+        dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for dx, dy in dirs:
+            nx, ny = i + dx, j + dy
+            if 0 <= nx < n and 0 <= ny < m and matrix[nx][ny] > matrix[i][j]:
+                max_path_len = max(max_path_len, 1 + self.dfs(matrix, nx, ny, dp))
+
+        dp[i][j] = max_path_len
+        return max_path_len
+
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        ans = 0
+        n = len(matrix)
+        if n == 0:
+            return ans
+        m = len(matrix[0])
+        dp = [[None] * m for _ in range(n)]
+
+        for i in range(n):
+            for j in range(m):
+                longest_inc_path = self.dfs(matrix, i, j, dp)
+                ans = max(ans, longest_inc_path)
+
+        return ans
+
+
+sol = Solution4()
 nums1 = [
     [9,9,4],
     [6,6,8],
