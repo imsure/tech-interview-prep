@@ -39,7 +39,6 @@ class Solution2:
     """
 
     def dfs(self, matrix, i, j, cur_path_len, lip_map):
-        # print('dfs on ', (i, j))
         longest_inc_path = cur_path_len
         n = len(matrix)
         m = len(matrix[0])
@@ -47,7 +46,6 @@ class Solution2:
         for dx, dy in dirs:
             nx, ny = i + dx, j + dy
             if 0 <= nx < n and 0 <= ny < m and matrix[nx][ny] > matrix[i][j]:
-                # print(matrix[i][j], ' -> ', matrix[nx][ny])
                 if (nx, ny) in lip_map:
                     tmp_len = cur_path_len + lip_map[(nx, ny)]
                 else:
@@ -59,8 +57,6 @@ class Solution2:
 
     def longestIncreasingPath(self, matrix):
         """
-        DFS
-
         :type matrix: List[List[int]]
         :rtype: int
         """
@@ -78,14 +74,56 @@ class Solution2:
                 cur_path_len = 1
                 longest_inc_path = self.dfs(matrix, i, j, cur_path_len, lip_map)
                 lip_map[(i, j)] = longest_inc_path
-                # print('populate entry ', (i, j))
                 ans = max(ans, longest_inc_path)
 
-        # print(lip_map)
         return ans
 
 
-sol = Solution2()
+class Solution3:
+    """
+    Use array to store computed results.
+    DP + DFS, update LIP of each entry dynamically so that we can reuse the results.
+    """
+
+    def dfs(self, matrix, i, j, cur_path_len, dp):
+        longest_inc_path = cur_path_len
+        n = len(matrix)
+        m = len(matrix[0])
+        dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for dx, dy in dirs:
+            nx, ny = i + dx, j + dy
+            if 0 <= nx < n and 0 <= ny < m and matrix[nx][ny] > matrix[i][j]:
+                if dp[nx][ny] > 0:
+                    tmp_len = cur_path_len + dp[nx][ny]
+                else:
+                    tmp_len = self.dfs(matrix, nx, ny, cur_path_len+1, dp)
+                longest_inc_path = max(longest_inc_path, tmp_len)
+
+        dp[i][j] = longest_inc_path - cur_path_len + 1
+        return longest_inc_path
+
+    def longestIncreasingPath(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: int
+        """
+        ans = 0
+        n = len(matrix)
+        if n == 0:
+            return ans
+        m = len(matrix[0])
+        dp = [[0] * m for _ in range(n)]
+
+        for i in range(n):
+            for j in range(m):
+                cur_path_len = 1
+                longest_inc_path = self.dfs(matrix, i, j, cur_path_len, dp)
+                ans = max(ans, longest_inc_path)
+
+        return ans
+
+
+sol = Solution3()
 nums1 = [
     [9,9,4],
     [6,6,8],
