@@ -1,0 +1,13 @@
+Level 2 complete. You are now on level 3. Challenges to complete level: 3.  
+
+Level 1 100% [==========================================]
+Level 2 100% [==========================================]
+Level 3   0% [..........................................]
+Level 4   0% [..........................................]
+Level 5   0% [..........................................]
+
+Invite a friend to try a challenge. Send link below. This is a single-use code, so choose wisely.
+https://goo.gl/1KizG2
+Awesome! Commander Lambda was so impressed by your efforts that she's made you her personal assistant. You'll be helping her directly with her work, which means you'll have access to all of her files-including the ones on the LAMBCHOP doomsday device. This is the chance you've been waiting for. Can you use your new access to finally topple Commander Lambda's evil empire?
+Type request to request a new challenge now, or come back later.
+foobar:~/ imsure95$ 
